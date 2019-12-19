@@ -7,6 +7,17 @@ import matplotlib.pyplot as plt
 
 import time
 
+def logish(x, eps=1.e-5):
+    """
+    2nd order series expansion of log(x) about eps: log(eps) - sum_k=1^infty (f_eps)^k / k
+    Prevents infinities at x=0
+    """
+    f_eps = 1. - x/eps
+    mask = x>eps
+    ln = np.where(x<=eps, np.log(eps) - f_eps - f_eps*f_eps/2., 0.)
+    ln[mask] = np.log(x[mask])
+    return ln
+
 run_inversion=True
 start = time.time()
 
@@ -97,6 +108,21 @@ u = u0 + np.array([0., 0.25*e1, 0.5*e1, 0.5*e1, 0.5*e1,
                    0.75*e1 + e2, 0.75*e1, 0.75*e1 + e2,
                    0.5*e1 + 2.*e2, 0.5*e1 + 2.*e2,
                    0.5*e1 + 2.*e2, e1 + 2.*e2, 0.75*e1 + 4.*e2])
+
+def calculate_squared_reaction_energies(E_mbr, u):
+#we're looking for all the clusters contained in a cluster pair
+    ones = np.ones(len(E_mbr))
+    diffs = (np.einsum('ij, k, l -> iklj', E_mbr, ones, ones)
+             + np.einsum('ij, k, l -> kilj', E_mbr, ones, ones)
+             - np.einsum('ij, k, l -> klij', E_mbr, ones, ones)).min(axis=3) + 1
+    n_rxn_clusters = diffs.sum(axis=2)
+
+    pair_energies = np.einsum('i, j->ij', u, ones) + np.einsum('i, j->ji', u, ones)
+    rxn_cluster_energies = np.einsum('ijk, k', diffs, u)
+    return (pair_energies - 2.*rxn_cluster_energies/n_rxn_clusters)**2
+
+half_u_rxn_sqr = calculate_squared_reaction_energies(E_mbr, u)/2.
+
 a = np.exp(-u/(R*T))
 
 fig = plt.figure(figsize=(12,12))
@@ -159,7 +185,6 @@ for (xb, c) in [(0, 'red'),
             pfn = xfn*a
             M = pfn/np.sum(pfn) # fractions of different clusters
 
-
             # position in solution space
             # phi - psi, Equation 10.
             arr = np.array([1., Appn[0], Appn[1], Appn[2], Appn[3]])
@@ -180,89 +205,13 @@ for (xb, c) in [(0, 'red'),
         pcl = np.array([np.prod([p if E_mbr[i][j] > 1.e-10 else 1. for j, p in enumerate(cl)])
                         for i, cl in enumerate(np.einsum('ij, j -> ij', E_mbr, ps))])
         non_ideal = np.sum(pcl*u)/(R*T)
-
-        non_ideal_2 = 0.
-        # following only working for binary exchange...
-        for i, cl1 in enumerate(names):
-            for j, cl2 in enumerate(names):
-                if i<j:
-                    similar = np.array([1 if cl1[b] == cl2[b] else 0 for b in range(4)])
-                    n_similar = np.sum(similar)
-
-                    # The following seems to work for two components.
-                    # Each term corresponds to a reaction between clusters.
-                    # These expressions can probably be simplified.
-                    # Systems with >2 components should work in the same way.
-                    if n_similar < 3:
-                        if n_similar == 2: # i.e. AASS + SSSS <-> ASSS + SASS
-                            dissimilar = np.where(similar == 0)[0]
-                            cl3 = list(cl1)
-                            cl4 = list(cl1)
-                            cl3[dissimilar[0]] = list(cl2)[dissimilar[0]]
-                            cl4[dissimilar[1]] = list(cl2)[dissimilar[1]]
-
-                            cl3 = "".join(cl3)
-                            cl4 = "".join(cl4)
-
-                            us = np.array([u[names.index(cl1)],
-                                           u[names.index(cl2)],
-                                           u[names.index(cl3)],
-                                           u[names.index(cl4)]])/(R*T)
-                            Erxn = (us[0] + us[1]) - np.sum(us)/2.
-
-                        if n_similar == 1:
-                            dissimilar = np.where(similar == 0)[0]
-                            cl3 = list(cl1)
-                            cl4 = list(cl1)
-                            cl5 = list(cl1)
-                            cl6 = list(cl2)
-                            cl7 = list(cl2)
-                            cl8 = list(cl2)
-                            cl3[dissimilar[0]] = list(cl2)[dissimilar[0]]
-                            cl4[dissimilar[1]] = list(cl2)[dissimilar[1]]
-                            cl5[dissimilar[2]] = list(cl2)[dissimilar[2]]
-                            cl6[dissimilar[0]] = list(cl1)[dissimilar[0]]
-                            cl7[dissimilar[1]] = list(cl1)[dissimilar[1]]
-                            cl8[dissimilar[2]] = list(cl1)[dissimilar[2]]
-
-                            cl3 = "".join(cl3)
-                            cl4 = "".join(cl4)
-                            cl5 = "".join(cl5)
-                            cl6 = "".join(cl6)
-                            cl7 = "".join(cl7)
-                            cl8 = "".join(cl8)
-
-                            us = np.array([u[names.index(cl1)],
-                                           u[names.index(cl2)],
-                                           u[names.index(cl3)],
-                                           u[names.index(cl4)],
-                                           u[names.index(cl5)],
-                                           u[names.index(cl6)],
-                                           u[names.index(cl7)],
-                                           u[names.index(cl8)]])/(R*T)
-                            Erxn = (us[0] + us[1]) - np.sum(us)/4.
-
-                        if n_similar == 0:
-                            us = u/(R*T)
-                            Erxn = (us[names.index(cl1)] +
-                                    us[names.index(cl2)]) - np.sum(us)/8.
-
-                        non_ideal_2 -= pcl[i]*pcl[j]*Erxn*Erxn
-
-
-        #non_ideal_2 += ((np.prod([p if p > 1.e-10 else 1. for p in cl])**2)*(u[i]/(R*T))**2
-        #                - np.prod([p if p > 1.e-10 else 1. for p in cl])*u[i]/(R*T))
-        #non_ideal += np.prod([pn if pn > 1.e-10 else 1. for pn in cl])*u[i]/(R*T)*np.exp(-u[i]/(R*T))
-        #phi=0.
-        #phi += np.prod([pn if pn > 1.e-10 else 1. for pn in cl])*np.exp(-u[i]/(R*T))
-
-        #non_ideal /= phi
+        non_ideal_2 = -np.einsum('i, ij, j ->', pcl, half_u_rxn_sqr/((R*T)**2), pcl)
 
         numerical_solution.append(p)
         ideal_model.append(ideal)
         nonideal_1st_order.append(non_ideal)
         nonideal_2nd_order.append(non_ideal_2)
-
+        cluster_energies = ideal + non_ideal + non_ideal_2
 
     end = time.time()
     print(end - start)
