@@ -47,8 +47,8 @@ fac = 0.8; ys = np.linspace(0.93, 0.23, 41)
 
 T = 6000./R
 u0 = 0.
-e1 = 4000.*fac
-e2 = 8000.*fac
+e1 = 0000.*fac
+e2 = 0000.*fac
 n = 1.
 
 # Ordering as in Table 1
@@ -136,6 +136,7 @@ for (xb, c) in [(0, 'red'),
     ideal_model = []
     nonideal_1st_order = []
     nonideal_2nd_order = []
+    bless = []
     for i, y in enumerate(ys):
         if xb == 0:
             Appn = np.array([1.-y, 1.-y, 1.-y, 1.-y]) # proportion of A on each site
@@ -150,31 +151,26 @@ for (xb, c) in [(0, 'red'),
             # x = [x, y, z, p, q], the independent Lagrangian multipliers (Equation 7)
             if i == 0:
                 x = newton_krylov(fns(u, n, Appn, T), [1., 1., 1., 1., 1.],
-                                  method='cgs')
+                                  method='cgs', f_tol=1.e-8)
             else:
                 x = newton_krylov(fns(u, n, Appn, T), x,
-                                  method='cgs', f_tol=1.e-7)
+                                  method='cgs', f_tol=1.e-8)
 
             # Table 6
-            xfn = x[0]*np.array([x[1], 1., x[2], x[3], x[4],
-
-                                 x[1]*x[2], x[1]*x[3], x[1]*x[4],
-                                 x[2]*x[3], x[2]*x[4],
-                                 x[3]*x[4],
-
-                                 x[1]*x[2]*x[3], x[1]*x[2]*x[4], x[1]*x[3]*x[4],
-                                 x[2]*x[3]*x[4],
-
-                                 x[1]*x[2]*x[3]*x[4]])
+            xfn = x[0]*np.einsum('i, j, k, l->ijkl',
+                                 [x[1], 1.], [x[2], 1.], [x[3], 1.], [x[4], 1.])
 
             # components of the partition function, phi (Equation 8b)
-            #pfn = xfn*a
-            #M = pfn/np.sum(pfn) # fractions of different clusters
-
+            pfn = xfn*a
+            M = pfn/np.sum(pfn) # fractions of different clusters
+            #print(M)
+            #print(x[1], x[2])
             # position in solution space
             # phi - psi, Equation 10.
             arr = np.array([1., Appn[0], Appn[1], Appn[2], Appn[3]])
             p = np.sum(arr*np.log(x))
+            #print(arr[0], arr[1], np.log(x[1]))
+            #p = np.sum(M*np.log(xfn)) # also position in solution space
         else:
             p=0
 
@@ -190,13 +186,65 @@ for (xb, c) in [(0, 'red'),
                                  ps[0], ps[1], ps[2], ps[3],
                                  ps[0], ps[1], ps[2], ps[3],
                                  half_u_rxn_sqr/((R*T)**2))
+        cluster_energies = ideal + non_ideal + non_ideal_2
+
+        # log activities for each cluster
+        id = np.identity(2)
+        id2 = np.einsum('im, jn, ko, lp->ijklmnop', id, id, id, id)
+        log_ideal_activities = (np.einsum('ijklmnop, m->ijkl', id2, logish(ps[0]))
+                                + np.einsum('ijklmnop, n->ijkl', id2, logish(ps[1]))
+                                + np.einsum('ijklmnop, o->ijkl', id2, logish(ps[2]))
+                                + np.einsum('ijklmnop, p->ijkl', id2, logish(ps[3])))
 
 
+        # CORRECT? NEED TO CHECK
+        o = np.ones(2)
+        idooo = np.einsum('im, j, k, l->imjkl', id, o, o, o)
+        log_nonideal_activities = (np.einsum('imjkl, n, o, p, mnop->ijkl', idooo, ps[1], ps[2], ps[3], u/(R*T))
+                                   + np.einsum('jnikl, m, o, p, mnop->ijkl', idooo, ps[1], ps[2], ps[3], u/(R*T))
+                                   + np.einsum('koijl, m, n, p, mnop->ijkl', idooo, ps[1], ps[2], ps[3], u/(R*T))
+                                   + np.einsum('lpijk, m, n, o, mnop->ijkl', idooo, ps[1], ps[2], ps[3], u/(R*T))
+                                   )
+
+        # not correct yet!!
+        ursq = half_u_rxn_sqr/((R*T)**2)
+        log_nonideal_activities_2 = -(np.einsum('imjkl, n, o, p, q, r, s, t, mnopqrst->ijkl', idooo, ps[1], ps[2], ps[3], ps[0], ps[1], ps[2], ps[3], ursq)
+                                      + np.einsum('jnikl, m, o, p, q, r, s, t, mnopqrst->ijkl', idooo, ps[0], ps[2], ps[3], ps[0], ps[1], ps[2], ps[3], ursq)
+                                      + np.einsum('koijl, m, n, p, q, r, s, t, mnopqrst->ijkl', idooo, ps[0], ps[1], ps[3], ps[0], ps[1], ps[2], ps[3], ursq)
+                                      + np.einsum('lpijk, m, n, o, q, r, s, t, mnopqrst->ijkl', idooo, ps[0], ps[1], ps[2], ps[0], ps[1], ps[2], ps[3], ursq)
+                                      + np.einsum('iqjkl, m, n, o, p, r, s, t, mnopqrst->ijkl', idooo, ps[0], ps[1], ps[2], ps[3], ps[1], ps[2], ps[3], ursq)
+                                      + np.einsum('jrikl, m, n, o, p, q, s, t, mnopqrst->ijkl', idooo, ps[0], ps[1], ps[2], ps[3], ps[0], ps[2], ps[3], ursq)
+                                      + np.einsum('ksijl, m, n, o, p, q, r, t, mnopqrst->ijkl', idooo, ps[0], ps[1], ps[2], ps[3], ps[0], ps[1], ps[3], ursq)
+                                      + np.einsum('ltijk, m, n, o, p, q, r, s, mnopqrst->ijkl', idooo, ps[0], ps[1], ps[2], ps[3], ps[0], ps[1], ps[2], ursq)
+                                      )
+        #log_nonideal_activities_2 = 0.
+        log_activities = log_ideal_activities + log_nonideal_activities + log_nonideal_activities_2
+        mod = cluster_energies - np.einsum('i, j, k, l, ijkl->', ps[0], ps[1], ps[2], ps[3], log_activities)
+        log_activities += mod
+
+        activities = np.exp(log_activities)
+        print('this definition is not correct! need to find how to determine x from these derivatives. Start with ideal model first!!')
+        M2 = activities/np.sum(activities)
+
+        # Arr*log(x) = p
+
+        #print((M2))
+        #exit()
         numerical_solution.append(p)
         ideal_model.append(ideal)
         nonideal_1st_order.append(non_ideal)
         nonideal_2nd_order.append(non_ideal_2)
-        cluster_energies = ideal + non_ideal + non_ideal_2
+
+        if i == 20:
+            ax[0].scatter([y], [cluster_energies], c=c)
+            if xb==0:
+                ax[0].plot([0, 1], [log_activities[0,0,0,0], log_activities[1,1,1,1]], c=c)
+            if xb==1:
+                ax[0].plot([0, 1], [log_activities[0,0,0,1], log_activities[1,1,1,1]], c=c)
+            if xb==2:
+                ax[0].plot([0, 1], [log_activities[1,1,1,1], log_activities[0,0,1,1]], c=c)
+            if xb==3:
+                ax[0].plot([0, 1], [log_activities[1,0,1,1], log_activities[0,1,1,1]], c=c)
 
     end = time.time()
     print(end - start)

@@ -110,10 +110,12 @@ us = np.array([u[names.index('SASS')],
 ax[1].scatter([0., 1., 0., 1.], us)
 
 
-for (xb, c) in [(0, 'red'),
-                (1, 'orange'),
-                (2, 'blue'),
-                (3, 'purple')]:
+#for (xb, c) in [(0, 'red'),
+#                (1, 'orange'),
+#                (2, 'blue'),
+#                (3, 'purple')]:
+
+for (xb, c) in [(3, 'purple')]:
     numerical_solution = []
     ideal_model = []
     nonideal_1st_order = []
@@ -272,17 +274,17 @@ for (xb, c) in [(0, 'red'),
     nonideal_1st_order = np.array(nonideal_1st_order)
     nonideal_2nd_order = np.array(nonideal_2nd_order)
 
-    ax[0].plot(ys, numerical_solution, label='numerical solution', c=c)
+    ax[0].plot(ys, numerical_solution, label='numerical solution', c=c, alpha=0.3)
     ax[0].plot(ys, ideal_model, label='ideal', c=c, linestyle=':')
     ax[0].plot(ys, ideal_model+nonideal_1st_order, label='ideal + 1st order non-ideal', c=c, linestyle='--')
     ax[0].plot(ys, ideal_model+nonideal_1st_order+nonideal_2nd_order, label='ideal + 2nd order non-ideal', linestyle=':', c=c)
 
-    ax[1].plot(ys, numerical_solution-ideal_model, label='numerical solution (non-ideal)', c=c)
+    ax[1].plot(ys, numerical_solution-ideal_model, label='numerical solution (non-ideal)', c=c, alpha=0.3)
     ax[1].plot(ys, nonideal_1st_order, label='ideal + 1st order non-ideal', c=c, linestyle='--')
     ax[1].plot(ys, nonideal_1st_order+nonideal_2nd_order, label='ideal + 2nd order non-ideal', linestyle=':', c=c)
 
 
-    ax[2].plot(ys, numerical_solution-(ideal_model+nonideal_1st_order), label='numerical solution (2nd order non-ideal)', c=c)
+    ax[2].plot(ys, numerical_solution-(ideal_model+nonideal_1st_order), label='numerical solution (2nd order non-ideal)', c=c, alpha=0.3)
     ax[2].plot(ys, nonideal_2nd_order, label='2nd order non-ideal', c=c, linestyle=':')
 
     ax[3].plot(ys, numerical_solution-(ideal_model+nonideal_1st_order+nonideal_2nd_order), label='3rd order error', c=c)
@@ -291,5 +293,7 @@ for i in range(4):
     ax[i].legend()
     ax[i].set_xlim(0., 1.)
 
-
+ys = np.linspace(0., 1., 1001)
+ax[3].plot(ys, ys**3.*(1. - ys)**3*0.5 - (0.8*0.25*ys**2*(1. - ys)**2 +
+                                          0.2*0.25*0.25*ys*(1. - ys))*0.5)
 plt.show()
