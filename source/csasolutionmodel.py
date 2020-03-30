@@ -32,10 +32,10 @@ class CSAModel(object):
         self.cluster_energies = cluster_energies.flatten()
         self.cluster_occupancies = np.array([np.hstack(cl) for cl in clusters])
 
-        self.pivots = [i for i in range(self.species_per_site[0])]
-        for i in range(1, self.n_sites):
-            self.pivots.append(np.prod(self.species_per_site[0:i]))
-
+        self.pivots = list(sorted(set([list(c).index(1)
+                                       for c in self.cluster_occupancies.T])))
+        #print(self.pivots)
+        #exit()
         self.independent_cluster_occupancies = np.array([self.cluster_occupancies[p]
                                                          for p in self.pivots],
                                                         dtype='int')
@@ -110,7 +110,8 @@ class CSAModel(object):
             self.ln_cluster_proportions =logish(self.cluster_proportions)
         else:
             sol = root(self.delta_proportions, self._ideal_c, jac=True,
-                       args=(self.temperature), method='lm', options={'ftol':1.e-16})# + np.random.rand(len(self._ideal_c))*1.e-2)
+                       args=(self.temperature),
+                       method='lm', options={'ftol':1.e-16})# + np.random.rand(len(self._ideal_c))*1.e-2)
 
             #print('ideal', self._ideal_c)
             if np.max(np.abs(sol.fun)) < 1.e-10:
