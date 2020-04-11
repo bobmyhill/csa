@@ -80,11 +80,12 @@ class CSAModel(object):
         self.pivots = list(sorted(set([list(c).index(1)
                                        for c in self.cluster_occupancies.T])))
 
-        self.independent_cluster_occupancies = np.array([self.cluster_occupancies[p] for p in self.pivots],
-                                                        dtype='int')
-
-        self.independent_cluster_compositions = np.array([self.cluster_compositions[p] for p in self.pivots],
-                                                         dtype='int')
+        ind_cl_occs = np.array([self.cluster_occupancies[p]
+                                for p in self.pivots], dtype='int')
+        ind_cl_comps = np.array([self.cluster_compositions[p]
+                                 for p in self.pivots],  dtype='int')
+        self.independent_cluster_occupancies = ind_cl_occs
+        self.independent_cluster_compositions = ind_cl_comps
 
         null = Matrix(self.independent_cluster_compositions.T).nullspace()
         rxn_matrix = np.array([np.array(v).T[0] for v in null])
