@@ -1,0 +1,3 @@
+if we have J = d(roots)/d(mu) [a square matrix]
+and we know how proportions change the roots,
+we can calculate how mu changes by taking J^-1
