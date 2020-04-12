@@ -22,26 +22,26 @@ def binary_cluster_energies(wAB, alpha=0., beta=0.):
     See Zhang et al., 2003
     """
     u = np.zeros((2, 2, 2, 2))
-    u[1,1,1,1] = 0.
+    u[1, 1, 1, 1] = 0.
 
-    u[0,1,1,1] = 3.*wAB*(1. + beta)
-    u[1,0,1,1] = 3.*wAB*(1. + beta)
-    u[1,1,0,1] = 3.*wAB*(1. + beta)
-    u[1,1,1,0] = 3.*wAB*(1. + beta)
+    u[0, 1, 1, 1] = 3.*wAB*(1. + beta)
+    u[1, 0, 1, 1] = 3.*wAB*(1. + beta)
+    u[1, 1, 0, 1] = 3.*wAB*(1. + beta)
+    u[1, 1, 1, 0] = 3.*wAB*(1. + beta)
 
-    u[0,0,1,1] = 4.*wAB
-    u[0,1,0,1] = 4.*wAB
-    u[0,1,1,0] = 4.*wAB
-    u[1,0,0,1] = 4.*wAB
-    u[1,0,1,0] = 4.*wAB
-    u[1,1,0,0] = 4.*wAB
+    u[0, 0, 1, 1] = 4.*wAB
+    u[0, 1, 0, 1] = 4.*wAB
+    u[0, 1, 1, 0] = 4.*wAB
+    u[1, 0, 0, 1] = 4.*wAB
+    u[1, 0, 1, 0] = 4.*wAB
+    u[1, 1, 0, 0] = 4.*wAB
 
-    u[0,0,0,1] = 3.*wAB*(1. + alpha)
-    u[0,0,1,0] = 3.*wAB*(1. + alpha)
-    u[0,1,0,0] = 3.*wAB*(1. + alpha)
-    u[1,0,0,0] = 3.*wAB*(1. + alpha)
+    u[0, 0, 0, 1] = 3.*wAB*(1. + alpha)
+    u[0, 0, 1, 0] = 3.*wAB*(1. + alpha)
+    u[0, 1, 0, 0] = 3.*wAB*(1. + alpha)
+    u[1, 0, 0, 0] = 3.*wAB*(1. + alpha)
 
-    u[0,0,0,0] = 0.
+    u[0, 0, 0, 0] = 0.
     return u
 
 
@@ -57,7 +57,7 @@ def minimize_energy(T, p_A, ss):
                                               1.-A3, 0.+A3,
                                               1.-A4, 0.+A4]))
 
-        #print(args)
+        # print(args)
         ss.equilibrate_clusters()
         return ss.molar_gibbs
 
@@ -98,35 +98,34 @@ Ss_disordered = np.empty_like(reduced_temperatures)
 Ss_equilibrium = np.empty_like(reduced_temperatures)
 
 for gamma in [1., 1.22]:
-    ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R), gamma=gamma,
-                  site_species = [['A', 'B'], ['A', 'B'],
-                                  ['A', 'B'], ['A', 'B']])
+    ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R),
+                  gamma=gamma,
+                  site_species=[['A', 'B'], ['A', 'B'],
+                                ['A', 'B'], ['A', 'B']])
 
     for i, T in enumerate(reduced_temperatures):
-        ss.equilibrate(composition={'A':2., 'B':2.}, temperature=T)
+        ss.equilibrate(composition={'A': 2., 'B': 2.}, temperature=T)
         Ss_equilibrium[i] = ss.molar_entropy
 
     ax1[1].plot(reduced_temperatures, Ss_equilibrium/R, label='equilibrium')
 
 
-fig1.savefig('Oates_1999_benchmarks.pdf')
-plt.show()
-exit()
-
 xs = np.linspace(0.15, 0.85, 401)
 Gs_equilibrium = np.empty_like(xs)
 
-ss = CSAModel(cluster_energies=binary_cluster_energies(wAB), gamma=gamma,
-              site_species = [['A', 'B'], ['A', 'B'],
-                              ['A', 'B'], ['A', 'B']])
+ss = CSAModel(cluster_energies=binary_cluster_energies(-R),
+              gamma=gamma,
+              site_species=[['A', 'B'], ['A', 'B'],
+                            ['A', 'B'], ['A', 'B']])
 
 for plti, alpha, beta, gamma in [(0, 0., 0., 1.),
                                  (2, 0., 0., 1.22),
                                  (4, 1., 0.92, 1.42)]:
 
-    ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R), gamma=gamma,
-                  site_species = [['A', 'B'], ['A', 'B'],
-                                  ['A', 'B'], ['A', 'B']])
+    ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R),
+                  gamma=gamma,
+                  site_species=[['A', 'B'], ['A', 'B'],
+                                ['A', 'B'], ['A', 'B']])
 
     for T in [0.4, 0.6]:
         print(gamma, T)
@@ -135,8 +134,9 @@ for plti, alpha, beta, gamma in [(0, 0., 0., 1.),
                 ss.equilibrate(composition={'A': 4. * (1.-x), 'B': 4.*x},
                                temperature=T)
                 Gs_equilibrium[i] = ss.molar_gibbs
-            except:
-                print('oh no, couldnae equilibrate. gonna have to fix this some time')
+            except Exception:
+                print('oh no, couldnae equilibrate at x={0}. '
+                      'Gonna have to fix this some time'.format(x))
                 Gs_equilibrium[i] = Gs_equilibrium[i-1] + 5.
 
         points = np.array([xs, Gs_equilibrium]).T
@@ -149,15 +149,15 @@ for plti, alpha, beta, gamma in [(0, 0., 0., 1.),
         n_vertices = len(hull.vertices)
         for i in range(1, n_vertices-1):
             if hull.vertices[i-1] < hull.vertices[i] - 1:
-                starts.append(np.mean(points[hull.vertices[i-1]:hull.vertices[i-1]+2,0]))
-                ends.append(np.mean(points[hull.vertices[i]-1:hull.vertices[i]+1,0]))
+                ss = points[hull.vertices[i-1]:hull.vertices[i-1]+2, 0]
+                starts.append(np.mean(ss))
+                es = points[hull.vertices[i]-1:hull.vertices[i]+1, 0]
+                ends.append(np.mean(es))
 
         ax1[plti].scatter(starts, np.ones(len(starts))*T)
         ax1[plti].scatter(ends, np.ones(len(ends))*T)
 
-
-
         ax1[3].plot(xs, Gs_equilibrium)
 
-fig.savefig('Oates_1999_benchmarks.pdf')
+fig1.savefig('Oates_1999_benchmarks.pdf')
 plt.show()
