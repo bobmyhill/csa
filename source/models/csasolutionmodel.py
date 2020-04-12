@@ -255,7 +255,7 @@ class CSAModel(object):
         return self._ideal_cluster_proportions(self.p_s)
 
     def _cluster_proportions(self, c, temperature):
-        lnval = self.A_ind.dot(c) - self.cluster_energies_flat/(R*temperature)
+        lnval = self.A_ind.dot(c) - self.cluster_energies_flat/(self.gamma*R*temperature)
         return np.exp(np.where(lnval > 100, 100., lnval))
 
     def set_cluster_proportions(self):
@@ -407,7 +407,7 @@ class CSAModel(object):
         S_n = -R*np.sum(self.cluster_proportions * self.ln_cluster_proportions)
         S_i = -R*np.sum(self.p_s * self.ln_p_s)
 
-        # remember gamm is the number of noninterfering clusters PER SITE
+        # remember gamma is the number of noninterfering clusters PER SITE
         S_t = self.gamma * S_n + (1./self.n_sites - self.gamma) * S_i
 
         return S_t
@@ -419,7 +419,7 @@ class CSAModel(object):
         hess_G = np.einsum('ijk, i -> jk', F, self.cluster_energies_flat)
         hess_S = self.hessian_entropy
 
-        return self.gamma * hess_G - self.temperature * hess_S
+        return hess_G - self.temperature * hess_S
 
     @property
     def molar_chemical_potentials(self):
@@ -430,7 +430,7 @@ class CSAModel(object):
 
         D = self._dpcl_dp_ind()
         g_E = np.einsum('lk, l', D, self.cluster_energies_flat)
-        chemical_potentials = self.gamma * g_E - self.temperature * g_S_t
+        chemical_potentials = g_E - self.temperature * g_S_t
 
         return chemical_potentials
 
@@ -441,6 +441,6 @@ class CSAModel(object):
         """
         S_t = self.molar_entropy
         E_t = np.sum(self.cluster_proportions * self.cluster_energies)
-        G_t = self.gamma * E_t - self.temperature * S_t
+        G_t = E_t - self.temperature * S_t
 
         return G_t

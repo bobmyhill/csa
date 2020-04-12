@@ -1,5 +1,5 @@
 import numpy as np
-from models.csasolutionmodel import *
+from models.csasolutionmodel import CSAModel, R
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
@@ -98,8 +98,7 @@ Ss_disordered = np.empty_like(reduced_temperatures)
 Ss_equilibrium = np.empty_like(reduced_temperatures)
 
 for gamma in [1., 1.22]:
-    wAB = -1.*R/gamma
-    ss = CSAModel(cluster_energies=binary_cluster_energies(wAB), gamma=gamma,
+    ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R), gamma=gamma,
                   site_species = [['A', 'B'], ['A', 'B'],
                                   ['A', 'B'], ['A', 'B']])
 
@@ -109,6 +108,10 @@ for gamma in [1., 1.22]:
 
     ax1[1].plot(reduced_temperatures, Ss_equilibrium/R, label='equilibrium')
 
+
+fig1.savefig('Oates_1999_benchmarks.pdf')
+plt.show()
+exit()
 
 xs = np.linspace(0.15, 0.85, 401)
 Gs_equilibrium = np.empty_like(xs)
@@ -120,8 +123,8 @@ ss = CSAModel(cluster_energies=binary_cluster_energies(wAB), gamma=gamma,
 for plti, alpha, beta, gamma in [(0, 0., 0., 1.),
                                  (2, 0., 0., 1.22),
                                  (4, 1., 0.92, 1.42)]:
-    wAB = -1.*R/gamma
-    ss = CSAModel(cluster_energies=binary_cluster_energies(wAB), gamma=gamma,
+
+    ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R), gamma=gamma,
                   site_species = [['A', 'B'], ['A', 'B'],
                                   ['A', 'B'], ['A', 'B']])
 
@@ -156,4 +159,5 @@ for plti, alpha, beta, gamma in [(0, 0., 0., 1.),
 
         ax1[3].plot(xs, Gs_equilibrium)
 
+fig.savefig('Oates_1999_benchmarks.pdf')
 plt.show()

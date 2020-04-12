@@ -1,8 +1,9 @@
 import numpy as np
-from models.csasolutionmodel import *
+from models.csasolutionmodel import CSAModel, R
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
+
 
 def binary_cluster_energies(wAB):
     """
@@ -20,27 +21,28 @@ def binary_cluster_energies(wAB):
     See Zhang et al., 2003
     """
     u = np.zeros((2, 2, 2, 2))
-    u[1,1,1,1] = 0.
+    u[1, 1, 1, 1] = 0.
 
-    u[0,1,1,1] = 3.*wAB
-    u[1,0,1,1] = 3.*wAB
-    u[1,1,0,1] = 3.*wAB
-    u[1,1,1,0] = 3.*wAB
+    u[0, 1, 1, 1] = 3.*wAB
+    u[1, 0, 1, 1] = 3.*wAB
+    u[1, 1, 0, 1] = 3.*wAB
+    u[1, 1, 1, 0] = 3.*wAB
 
-    u[0,0,1,1] = 4.*wAB
-    u[0,1,0,1] = 4.*wAB
-    u[0,1,1,0] = 4.*wAB
-    u[1,0,0,1] = 4.*wAB
-    u[1,0,1,0] = 4.*wAB
-    u[1,1,0,0] = 4.*wAB
+    u[0, 0, 1, 1] = 4.*wAB
+    u[0, 1, 0, 1] = 4.*wAB
+    u[0, 1, 1, 0] = 4.*wAB
+    u[1, 0, 0, 1] = 4.*wAB
+    u[1, 0, 1, 0] = 4.*wAB
+    u[1, 1, 0, 0] = 4.*wAB
 
-    u[0,0,0,1] = 3.*wAB
-    u[0,0,1,0] = 3.*wAB
-    u[0,1,0,0] = 3.*wAB
-    u[1,0,0,0] = 3.*wAB
+    u[0, 0, 0, 1] = 3.*wAB
+    u[0, 0, 1, 0] = 3.*wAB
+    u[0, 1, 0, 0] = 3.*wAB
+    u[1, 0, 0, 0] = 3.*wAB
 
-    u[0,0,0,0] = 0.
+    u[0, 0, 0, 0] = 0.
     return u
+
 
 def ternary_cluster_energies(wAB):
     """
@@ -59,7 +61,7 @@ def ternary_cluster_energies(wAB):
 
     See Zhang et al., 2003
     """
-    u = np.zeros((3,3,3,3))
+    u = np.zeros((3, 3, 3, 3))
 
     for indices, v in np.ndenumerate(u):
 
@@ -115,7 +117,10 @@ T = 1.
 p_As = np.linspace(0.001, 0.5, 101)
 Es = np.empty_like(p_As)
 
-ss = CSAModel(cluster_energies=binary_cluster_energies(wAB), gamma=1.)
+ss = CSAModel(cluster_energies=binary_cluster_energies(wAB),
+              gamma=1.,
+              site_species=[['A', 'B'], ['A', 'B'],
+                            ['A', 'B'], ['A', 'B']])
 
 for i, p_A in enumerate(p_As):
     print(p_A)
@@ -131,7 +136,9 @@ p_ABCC = np.empty_like(xs)
 p_AABC = np.empty_like(xs)
 p_B = np.empty_like(xs)
 
-ss = CSAModel(cluster_energies=ternary_cluster_energies(wAB), gamma=1.)
+ss = CSAModel(cluster_energies=ternary_cluster_energies(wAB), gamma=1.,
+              site_species=[['A', 'B', 'C'], ['A', 'B', 'C'],
+                            ['A', 'B', 'C'], ['A', 'B', 'C']])
 for i, x in enumerate(xs):
     print(x)
 
@@ -147,8 +154,8 @@ for i, x in enumerate(xs):
 
     # Find which cluster is AABC
     p_B[i] = (x/2.)
-    p_ABCC[i] = ss.cluster_proportions[0,1,2,2]*12.
-    p_AABC[i] = ss.cluster_proportions[0,0,1,2]*12.
+    p_ABCC[i] = ss.cluster_proportions[0, 1, 2, 2]*12.
+    p_AABC[i] = ss.cluster_proportions[0, 0, 1, 2]*12.
 
 ax[1].plot(p_B, Es/R)
 ax[2].plot(p_B, p_ABCC)
