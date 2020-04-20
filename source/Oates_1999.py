@@ -2,7 +2,6 @@ import numpy as np
 from models.csasolutionmodel import CSAModel, R
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
-from scipy.optimize import minimize
 from scipy.spatial import ConvexHull
 
 
@@ -45,32 +44,6 @@ def binary_cluster_energies(wAB, alpha=0., beta=0.):
     return u
 
 
-def minimize_energy(T, p_A, ss):
-    def energy(args, T, p_A, ss):
-        A1, A2, A3 = args
-        A4 = 4.*p_A - (A1 + A2 + A3)
-        # independent clusters are AAAA, AAAB, AABA, ABAA, BAAA
-
-        ss.set_state(T)
-        ss.set_composition_from_p_s(np.array([1.-A1, 0.+A1,
-                                              1.-A2, 0.+A2,
-                                              1.-A3, 0.+A3,
-                                              1.-A4, 0.+A4]))
-
-        # print(args)
-        ss.equilibrate_clusters()
-        return ss.molar_gibbs
-
-    cons = ({'type': 'ineq', 'fun': lambda x: x[0]},
-            {'type': 'ineq', 'fun': lambda x: x[1]},
-            {'type': 'ineq', 'fun': lambda x: x[2]},
-            {'type': 'ineq', 'fun': lambda x: 3.-x[0]-x[1]-x[2]})
-
-    sol = minimize(energy, [p_A, p_A, p_A], args=(T, p_A, ss),
-                   method='SLSQP', constraints=cons)
-    return sol
-
-
 """
 Figure 1 from Oates et al. (1999)
 wAB/RT = -1
@@ -89,7 +62,7 @@ ax1[0].imshow(pfig1, extent=[0.0, 1.0, 0.3, 0.9], aspect='auto')
 ax1[1].imshow(pfig2, extent=[0.6, 1.2, 0., 0.6], aspect='auto')
 ax1[2].imshow(pfig3, extent=[0.0, 1.0, 0.3, 1.], aspect='auto')
 
-ax1[4].imshow(pfig4, extent=[0.0, 1.0, 0.3, 1.0], aspect='auto')
+ax1[4].imshow(pfig4, extent=[0.0, 1.0, 1.08*3./7., 1.08], aspect='auto')
 ax1[5].imshow(pfig5, extent=[0.0, 1.0, 0.3, 1.0], aspect='auto')
 
 
@@ -110,36 +83,36 @@ for gamma in [1., 1.22]:
     ax1[1].plot(reduced_temperatures, Ss_equilibrium/R, label='equilibrium')
 
 
-xs = np.linspace(0.15, 0.85, 401)
-Gs_equilibrium = np.empty_like(xs)
-
-ss = CSAModel(cluster_energies=binary_cluster_energies(-R),
-              gamma=gamma,
-              site_species=[['A', 'B'], ['A', 'B'],
-                            ['A', 'B'], ['A', 'B']])
+xs = np.linspace(0.01, 0.99, 201)
 
 for plti, alpha, beta, gamma in [(0, 0., 0., 1.),
                                  (2, 0., 0., 1.22),
-                                 (4, 1., 0.92, 1.42)]:
+                                 (4, 1. - 1., 0.92 - 1., 1.42)]:
 
-    ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R),
-                  gamma=gamma,
-                  site_species=[['A', 'B'], ['A', 'B'],
-                                ['A', 'B'], ['A', 'B']])
-
-    for T in [0.4, 0.6]:
-        print(gamma, T)
+    for T in [0.4, 0.6, 0.8]:
+        print('\n{0} {1}'.format(gamma, T))
+        xs_equilibrium = []
+        Gs_equilibrium = []
         for i, x in enumerate(xs):
+            print('{0} / {1}'.format(i+1, len(xs)), end="\r")
+            ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R,
+                                                                   alpha=alpha,
+                                                                   beta=beta),
+                          gamma=gamma,
+                          site_species=[['A', 'B'], ['A', 'B'],
+                                        ['A', 'B'], ['A', 'B']])
+
             try:
                 ss.equilibrate(composition={'A': 4. * (1.-x), 'B': 4.*x},
                                temperature=T)
-                Gs_equilibrium[i] = ss.molar_gibbs
-            except Exception:
+                xs_equilibrium.append(x)
+                Gs_equilibrium.append(ss.molar_gibbs)
+            except Exception as err:
+                print(err)
                 print('oh no, couldnae equilibrate at x={0}. '
                       'Gonna have to fix this some time'.format(x))
-                Gs_equilibrium[i] = Gs_equilibrium[i-1] + 5.
 
-        points = np.array([xs, Gs_equilibrium]).T
+        points = np.array([xs_equilibrium, Gs_equilibrium]).T
         hull = ConvexHull(points)
         for simplex in hull.simplices:
             ax1[3].plot(points[simplex, 0], points[simplex, 1], 'r--')
@@ -157,7 +130,9 @@ for plti, alpha, beta, gamma in [(0, 0., 0., 1.),
         ax1[plti].scatter(starts, np.ones(len(starts))*T)
         ax1[plti].scatter(ends, np.ones(len(ends))*T)
 
-        ax1[3].plot(xs, Gs_equilibrium)
+        if T == 0.4:
+            ax1[3].plot(xs_equilibrium, Gs_equilibrium, label=plti)
 
+ax1[3].legend()
 fig1.savefig('Oates_1999_benchmarks.pdf')
 plt.show()

@@ -40,6 +40,7 @@ class CSAModel(object):
 
         self.n_sites = len(cluster_energies.shape)
         self.species_per_site = np.array(cluster_energies.shape)
+        self.n_site_species = np.sum(self.species_per_site)
 
         if not len(site_species) == len(self.species_per_site):
             raise Exception('site_species must be a list of lists, '
@@ -54,6 +55,8 @@ class CSAModel(object):
 
         self.site_species_flat = [species for site in site_species
                                   for species in site]
+        self.n_clusters = len(self.site_species_flat)
+
         self.set_site_species = sorted(list(set(self.site_species_flat)))
 
         # Make correlation matrix between composition and site species
@@ -79,6 +82,7 @@ class CSAModel(object):
 
         self.pivots = list(sorted(set([list(c).index(1)
                                        for c in self.cluster_occupancies.T])))
+        self.n_ind = len(self.pivots)
 
         ind_cl_occs = np.array([self.cluster_occupancies[p]
                                 for p in self.pivots], dtype='int')
@@ -90,6 +94,7 @@ class CSAModel(object):
         null = Matrix(self.independent_cluster_compositions.T).nullspace()
         rxn_matrix = np.array([np.array(v).T[0] for v in null])
         self.isochemical_reactions = rxn_matrix
+        self.n_reactions = len(rxn_matrix)
 
         self._ps_to_p_ind = pinv(self.independent_cluster_occupancies.T)
 
@@ -103,17 +108,20 @@ class CSAModel(object):
 
         self.gamma = gamma
 
+        np.random.seed(seed=19)
+        std = np.std(self.cluster_energies_flat)
+        delta = np.random.rand(len(self.cluster_energies_flat))*std*1.e-10
+        self._delta_cluster_energies = delta
+
     def set_state(self, temperature):
         self.temperature = temperature
         self.equilibrated_clusters = False
 
     def set_composition_from_p_ind(self, p_ind):
-        self.p_ind = p_ind
+        self.p_ind = p_ind.astype('float64')
         self.p_s = self.independent_cluster_occupancies.T.dot(self.p_ind)
         self.ln_p_s = logish(self.p_s)
-
         self._ideal_c = logish(self._independent_ideal_cluster_proportions())
-
         self.equilibrated_clusters = False
 
     def set_composition_from_p_s(self, p_s):
@@ -127,7 +135,8 @@ class CSAModel(object):
             arr_c[self.set_site_species.index(k)] = v
         return arr_c
 
-    def ground_state_cluster_proportions(self, composition, normalize=True):
+    def ground_state_cluster_proportions_from_composition(self, composition,
+                                                          normalize=True):
 
         # first, make the numpy array
         arr_c = self.compositional_array(composition)
@@ -135,15 +144,13 @@ class CSAModel(object):
         # Apply a small random tweak to all energies to force the
         # solver to converge to the state with the minimum number of clusters
         # in the (common) circumstance where clusters are degenerate
-        np.random.seed(seed=19)
-        std = np.std(self.cluster_energies_flat)
-        c_rand = np.random.rand(len(self.cluster_energies_flat))*std*1.e-10
 
         # Solve the linear programming problem
         # Revised simplex is slower than interior-point,
         # but is required to find an accurate solution
         # (especially with the small random tweaks applied)
-        res = linprog(c=self.cluster_energies_flat + c_rand,
+        res = linprog(c=(self.cluster_energies_flat
+                         + self._delta_cluster_energies),
                       A_eq=self.cluster_compositions.T,
                       b_eq=arr_c,
                       bounds=[(0., 1.) for l in self.cluster_energies_flat],
@@ -158,7 +165,8 @@ class CSAModel(object):
             proportions /= np.sum(res.x)
         return proportions
 
-    def maximum_entropy_cluster_proportions(self, composition, normalize=True):
+    def maximum_entropy_cluster_proportions_from_composition(self, composition,
+                                                             normalize=True):
         def minus_entropy(p_ind):
             p_s = self.independent_cluster_occupancies.T.dot(p_ind)
             norm_sum_p_s = self.n_sites*np.sum(p_s)
@@ -185,31 +193,59 @@ class CSAModel(object):
 
     def equilibrate(self, composition, temperature):
 
-        self.set_state(temperature)
+        occs = self.independent_cluster_occupancies.T
 
-        def energy(p_ind):
+        def energy(rxn_amounts, p_ind_start, rxn_matrix):
+            p_ind = p_ind_start + rxn_matrix.T.dot(rxn_amounts)
+
+            # tweak to ensure feasibility of solution
+            p_s = occs.dot(p_ind)
+            invalid = (p_s < 0.)
+            if any(invalid):
+                f = min(abs(p_s_max[invalid]/(p_s_max[invalid] - p_s[invalid])))
+                f -= 1.e-6  # a little extra nudge into the valid domain
+                p_ind = f*p_ind + (1.-f)*p_ind_max
+                """
+                print('o', rxn_amounts)
+                rxn_amounts[:] = pinv(rxn_matrix.T).dot(p_ind - p_ind_start)
+                print('n', rxn_amounts)
+                """
+                """
+                p_s = occs.dot(p_ind)
+                invalid = (p_s < 0.)
+                if any(invalid):
+                    print('WHY!!! ARGH!!!!!')
+                """
+
             self.set_composition_from_p_ind(p_ind)
             self.equilibrate_clusters()
-            # J = self.molar_chemical_potentials
-            return self.molar_gibbs
+            grad = rxn_matrix.dot(self.molar_chemical_potentials)
+            return self.molar_gibbs, grad
 
-        c_arr = self.compositional_array(composition)
-
-        cons = (LinearConstraint(self.independent_cluster_occupancies.T,
-                                 0., 1.),
-                LinearConstraint(self.independent_cluster_compositions.T,
-                                 c_arr, c_arr))
+        self.set_state(temperature)
 
         # Find ordered and disordered states to use as starting points
-        p_cl_grd = self.ground_state_cluster_proportions(composition)
-        p_cl_max = self.maximum_entropy_cluster_proportions(composition)
+        p_cl_grd = self.ground_state_cluster_proportions_from_composition(composition)
+        p_cl_max = self.maximum_entropy_cluster_proportions_from_composition(composition)
+        p_ind_max = self.A_ind.T.dot(p_cl_max)
+        p_s_max = occs.dot(p_ind_max)
 
         # minimize using near-ground state as a starting point
         p_cl = 0.95*p_cl_grd + 0.05*p_cl_max
+        p_ind0 = self.A_ind.T.dot(p_cl)
+
+        # keep_feasible=True requires some future version of scipy
+        cons = LinearConstraint(occs.dot(self.isochemical_reactions.T),
+                                0.+1.e-4-occs.dot(p_ind0),
+                                1.-1.e-4-occs.dot(p_ind0))
+
+        guess = np.array([0. for i in range(self.n_reactions)])
+        # minimize using near-ground state as a starting point
         res = minimize(energy,
-                       self.A_ind.T.dot(p_cl),
+                       guess,
                        method='SLSQP', constraints=cons,
-                       jac=None)
+                       args=(p_ind0, self.isochemical_reactions),
+                       jac=True)
 
         # store c and E
         c = self.c
@@ -218,10 +254,20 @@ class CSAModel(object):
 
         # minimize using near-maximum entropy as a starting point
         p_cl = 0.05*p_cl_grd + 0.95*p_cl_max
+        p_ind0 = self.A_ind.T.dot(p_cl)
+
+        # keep_feasible=True requires some future version of scipy
+        cons = LinearConstraint(occs.dot(self.isochemical_reactions.T),
+                                0.-occs.dot(p_ind0),
+                                1.-occs.dot(p_ind0))
+
+        guess = np.array([0. for i in range(self.n_reactions)])
+        # minimize using near-ground state as a starting point
         res = minimize(energy,
-                       self.A_ind.T.dot(p_cl),
+                       guess,
                        method='SLSQP', constraints=cons,
-                       jac=None)
+                       args=(p_ind0, self.isochemical_reactions),
+                       jac=True)
 
         if res.fun > E:
             self.set_composition_from_p_ind(p_ind)
@@ -242,7 +288,6 @@ class CSAModel(object):
 
     def _ideal_cluster_proportions(self, p_s):
         occs = np.einsum('ij, j->ij', self.cluster_occupancies, p_s)
-
         i = 0
         proportions = np.ones(len(self.cluster_occupancies))
         for n_species in self.species_per_site:
@@ -250,12 +295,43 @@ class CSAModel(object):
             i += n_species
         return proportions
 
+    def _ground_state_cluster_proportions(self, p_ind):
+        # Solve the linear programming problem
+        # Revised simplex is slower than interior-point,
+        # but is required to find an accurate solution.
+        # The small pseudorandom (using a fixed seed)
+        # tweaks are applied so that a unique
+        # set of cluster proportions is obtained.
+        # (as the problem is degenerate).
+        res = linprog(c=(self.cluster_energies_flat
+                         + self._delta_cluster_energies),
+                      A_eq=self.A_ind.T,
+                      b_eq=p_ind,
+                      bounds=[(0., 1.) for l in self.cluster_energies_flat],
+                      method='revised simplex')
+        # x0=self.ideal_cluster_proportions)
+
+        if not res.success:
+            print(self.ideal_cluster_proportions)
+            print(self.A_ind.T.dot(self.ideal_cluster_proportions) - p_ind)
+            print('p_s:', self.independent_cluster_occupancies.T.dot(p_ind))
+            print(res)
+            raise Exception('Minimum ground state energy not found (2).')
+            exit()
+
+        return res.x
+
     @property
     def ideal_cluster_proportions(self):
         return self._ideal_cluster_proportions(self.p_s)
 
+    @property
+    def ground_state_cluster_proportions(self):
+        return self._ground_state_cluster_proportions(self.p_ind)
+
     def _cluster_proportions(self, c, temperature):
-        lnval = self.A_ind.dot(c) - self.cluster_energies_flat/(self.gamma*R*temperature)
+        lnval = (self.A_ind.dot(c)
+                 - self.cluster_energies_flat / (self.gamma * R * temperature))
         return np.exp(np.where(lnval > 100, 100., lnval))
 
     def set_cluster_proportions(self):
@@ -275,50 +351,64 @@ class CSAModel(object):
     def equilibrate_clusters(self):
         if np.max(self._ideal_c) > -1.e-10:  # pure endmember
             self.c = self._ideal_c
-        else:
+        else:  # Try the ideal cluster proportions
             sol = root(self.delta_proportions, self._ideal_c, jac=True,
                        args=(self.temperature),
                        method='lm', options={'ftol': 1.e-16})
-            # + np.random.rand(len(self._ideal_c))*1.e-2)
 
             # print('ideal', self._ideal_c)
-            if np.max(np.abs(sol.fun)) < 1.e-10:
+            if np.max(np.abs(sol.fun)) < 1.e-8:
                 self.c = sol.x
-            else:
-                # try to anneal
-                T = 10000.
-                n_steps = 4
-                good = True
-                while T > self.temperature + 100. or not good:
-                    T_steps = np.logspace(np.log10(T),
-                                          np.log10(self.temperature), n_steps)
+            else:  # Try near-fully ordered cluster proportions
 
-                    guess_c = self._ideal_c
-                    for i, T in enumerate(T_steps):
-                        sol = root(self.delta_proportions, guess_c,
-                                   args=(T), jac=True,
-                                   method='lm', tol=1.e-10,
-                                   options={'ftol': 1.e-16})
+                p_cl_ord = self.ground_state_cluster_proportions
+                p_cl_disord = self.ideal_cluster_proportions
+                p_cl_near_ord = 0.05 * p_cl_disord + 0.95 * p_cl_ord
+                near_ord_c = (logish(p_cl_near_ord[self.pivots])
+                              + (self.cluster_energies_flat[self.pivots]
+                                 / (self.temperature * R)))
 
-                        if np.max(np.abs(sol.fun)) < 1.e-10:
-                            guess_c = sol.x
-                            good = True
+                sol = root(self.delta_proportions, near_ord_c, jac=True,
+                           args=(self.temperature),
+                           method='lm', options={'ftol': 1.e-16})
 
-                        else:
-                            n_steps *= 2
+                if np.max(np.abs(sol.fun)) < 1.e-8:
+                    self.c = sol.x
+                else:
+                    # try to anneal
+                    T = 10000.
+                    n_steps = 4
+                    good = True
+                    while T > self.temperature + 0.1 or not good:
+                        T_steps = np.logspace(np.log10(T),
+                                              np.log10(self.temperature),
+                                              n_steps)
 
-                            if n_steps > 100:
-                                print(sol)
-                                print(self._cluster_proportions(sol.x,
-                                                                T_steps[-1]))
-                                raise Exception('Clusters could not be '
-                                                'equilibrated, '
-                                                'even with annealing')
-                            T = T_steps[i-1]
-                            good = False
-                            break
+                        guess_c = self._ideal_c
+                        for i, T in enumerate(T_steps):
+                            sol = root(self.delta_proportions, guess_c,
+                                       args=(T), jac=True,
+                                       method='lm', tol=1.e-10,
+                                       options={'ftol': 1.e-16})
 
-                self.c = sol.x
+                            if np.max(np.abs(sol.fun)) < 1.e-10:
+                                guess_c = sol.x
+                                good = True
+
+                            else:
+                                n_steps *= 2
+
+                                if n_steps > 100:
+                                    print(sol)
+                                    print(self._cluster_proportions(sol.x, T_steps[-1]))
+                                    raise Exception('Clusters could not be '
+                                                    'equilibrated, '
+                                                    'even with annealing')
+                                T = T_steps[i-1]
+                                good = False
+                                break
+
+                    self.c = sol.x
 
         self.equilibrated_clusters = True
         self.set_cluster_proportions()
@@ -335,7 +425,10 @@ class CSAModel(object):
 
         # the returned solve is equivalent to
         # np.einsum('lj, jk -> lk', dpcl_dc, pinv(dp_ind_dc)))
-        return solve(dp_ind_dc.T, dpcl_dc.T).T
+        try:
+            return solve(dp_ind_dc.T, dpcl_dc.T).T
+        except np.linalg.LinAlgError:  # singular matrix
+            return np.einsum('lj, jk -> lk', dpcl_dc, pinv(dp_ind_dc))
 
     def _d2pcl_dp_ind_dp_ind(self):
 
@@ -366,8 +459,8 @@ class CSAModel(object):
         D = self._dpcl_dp_ind()
         F = self._d2pcl_dp_ind_dp_ind()
 
-        n_site_atoms = np.sum(self.p_s)
-        # n_clusters = np.sum(self.cluster_proportions_flat)
+        total_site_atoms = np.sum(self.p_s)
+        # total_clusters = np.sum(self.cluster_proportions_flat)
 
         d2S_dpcl2 = np.diag(inverseish(self.cluster_proportions_flat)) - 1.
         hess_S_n = -R*(np.einsum('im, ij, mk-> jk', d2S_dpcl2, D, D)
@@ -377,7 +470,7 @@ class CSAModel(object):
         hess_S_i = -R*(np.einsum('ki, ji, i->jk',
                                  self.independent_cluster_occupancies,
                                  self.independent_cluster_occupancies,
-                                 inverseish(self.p_s)) - n_site_atoms)
+                                 inverseish(self.p_s)) - total_site_atoms)
 
         hess_S_t = (self.gamma * hess_S_n
                     + (1./self.n_sites - self.gamma) * hess_S_i)
