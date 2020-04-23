@@ -63,12 +63,13 @@ ax1[1].imshow(pfig2, extent=[0.6, 1.2, 0., 0.6], aspect='auto')
 ax1[2].imshow(pfig3, extent=[0.0, 1.0, 0.3, 1.], aspect='auto')
 
 ax1[4].imshow(pfig4, extent=[0.0, 1.0, 1.08*3./7., 1.08], aspect='auto')
-ax1[5].imshow(pfig5, extent=[0.0, 1.0, 0.3, 1.0], aspect='auto')
+ax1[5].imshow(pfig5, extent=[0.0, 1.0, 1.08*3./7., 1.08], aspect='auto')
 
 
 reduced_temperatures = np.linspace(0.6, 1.2, 61)
 Ss_disordered = np.empty_like(reduced_temperatures)
 Ss_equilibrium = np.empty_like(reduced_temperatures)
+
 
 for gamma in [1., 1.22]:
     ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R),
@@ -85,11 +86,15 @@ for gamma in [1., 1.22]:
 
 xs = np.linspace(0.01, 0.99, 201)
 
-for plti, alpha, beta, gamma in [(0, 0., 0., 1.),
-                                 (2, 0., 0., 1.22),
-                                 (4, 1. - 1., 0.92 - 1., 1.42)]:
+for plti, alpha, beta, gamma, lmda in [(0, 0., 0., 1., 0.),
+                                       (2, 0., 0., 1.22, 0.),
+                                       (4, 0., -0.08, 1.42, 0.),
+                                       (5, 0., -0.08, 1.42, 10.2)]:
 
-    for T in [0.4, 0.6, 0.8]:
+    interactions = np.array([[0., lmda/4.],
+                             [lmda/4., 0.]])
+
+    for T in [0.5, 0.7, 0.9]:
         print('\n{0} {1}'.format(gamma, T))
         xs_equilibrium = []
         Gs_equilibrium = []
@@ -100,7 +105,8 @@ for plti, alpha, beta, gamma in [(0, 0., 0., 1.),
                                                                    beta=beta),
                           gamma=gamma,
                           site_species=[['A', 'B'], ['A', 'B'],
-                                        ['A', 'B'], ['A', 'B']])
+                                        ['A', 'B'], ['A', 'B']],
+                          compositional_interactions=interactions)
 
             try:
                 ss.equilibrate(composition={'A': 4. * (1.-x), 'B': 4.*x},

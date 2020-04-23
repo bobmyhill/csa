@@ -36,7 +36,9 @@ class CSAModel(object):
     This is the base class for all Cluster/Site Approximation models
     """
 
-    def __init__(self, cluster_energies, gamma, site_species):
+    def __init__(self, cluster_energies, gamma, site_species,
+                 compositional_interactions=np.array([[0., 0.],
+                                                      [0., 0.]])):
 
         self.n_sites = len(cluster_energies.shape)
         self.species_per_site = np.array(cluster_energies.shape)
@@ -90,6 +92,10 @@ class CSAModel(object):
                                  for p in self.pivots],  dtype='int')
         self.independent_cluster_occupancies = ind_cl_occs
         self.independent_cluster_compositions = ind_cl_comps
+
+        self.independent_interactions = np.einsum('ij, lk, jk->il',
+                                                  ind_cl_comps, ind_cl_comps,
+                                                  compositional_interactions)
 
         null = Matrix(self.independent_cluster_compositions.T).nullspace()
         rxn_matrix = np.array([np.array(v).T[0] for v in null])
@@ -236,8 +242,8 @@ class CSAModel(object):
 
         # keep_feasible=True requires some future version of scipy
         cons = LinearConstraint(occs.dot(self.isochemical_reactions.T),
-                                0.+1.e-4-occs.dot(p_ind0),
-                                1.-1.e-4-occs.dot(p_ind0))
+                                0.-occs.dot(p_ind0),
+                                1.-occs.dot(p_ind0))
 
         guess = np.array([0. for i in range(self.n_reactions)])
         # minimize using near-ground state as a starting point
@@ -447,6 +453,26 @@ class CSAModel(object):
 
         return F
 
+    def non_ideal_hessian(self):
+        q = np.eye(self.n_ind) - np.einsum('i, j->ij', np.ones(self.n_ind),
+                                           self.p_ind)
+        hess = np.einsum('ij, jk, mk->im', q, self.independent_interactions, q)
+        hess += hess.T
+        return hess
+
+    def non_ideal_potentials(self):
+        # -sum(sum(qi.qj.Wij*)
+        # equation (2) of Holland and Powell 2003
+        q = np.eye(self.n_ind) - np.einsum('i, j->ij', np.ones(self.n_ind),
+                                           self.p_ind)
+        # The following are equivalent to
+        # np.einsum('ij, jk, ik->i', -q, self.Wx, q)
+        Wint = -(q.dot(self.independent_interactions)*q).sum(-1)
+        return Wint
+
+    def non_ideal_energy(self):
+        return np.einsum('i, j, ij', self.p_ind, self.p_ind, self.independent_interactions)
+
     def check_equilibrium(self):
         if self.equilibrated_clusters:
             pass
@@ -512,7 +538,7 @@ class CSAModel(object):
         hess_G = np.einsum('ijk, i -> jk', F, self.cluster_energies_flat)
         hess_S = self.hessian_entropy
 
-        return hess_G - self.temperature * hess_S
+        return hess_G - self.temperature * hess_S + self.non_ideal_hessian()
 
     @property
     def molar_chemical_potentials(self):
@@ -525,7 +551,7 @@ class CSAModel(object):
         g_E = np.einsum('lk, l', D, self.cluster_energies_flat)
         chemical_potentials = g_E - self.temperature * g_S_t
 
-        return chemical_potentials
+        return chemical_potentials + self.non_ideal_potentials()
 
     @property
     def molar_gibbs(self):
@@ -536,4 +562,4 @@ class CSAModel(object):
         E_t = np.sum(self.cluster_proportions * self.cluster_energies)
         G_t = E_t - self.temperature * S_t
 
-        return G_t
+        return G_t + self.non_ideal_energy()
