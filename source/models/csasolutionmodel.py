@@ -37,11 +37,14 @@ class CSAModel(object):
     """
 
     def __init__(self, cluster_energies, gamma, site_species,
-                 compositional_interactions=np.array([[0., 0.],
-                                                      [0., 0.]])):
+                 compositional_interactions=None):
 
         self.n_sites = len(cluster_energies.shape)
         self.species_per_site = np.array(cluster_energies.shape)
+        self.site_start_indices = (np.cumsum(self.species_per_site)
+                                   - self.species_per_site[0])
+        self.site_index_tuples = np.array([self.site_start_indices,
+                                           self.species_per_site]).T
         self.n_site_species = np.sum(self.species_per_site)
 
         if not len(site_species) == len(self.species_per_site):
@@ -59,15 +62,19 @@ class CSAModel(object):
                                   for species in site]
         self.n_clusters = len(self.site_species_flat)
 
-        self.set_site_species = sorted(list(set(self.site_species_flat)))
+        self.components = sorted(list(set(self.site_species_flat)))
+        self.n_components = len(self.components)
+
+        if compositional_interactions is None:
+            compositional_interactions = np.zeros((self.n_components,
+                                                   self.n_components))
 
         # Make correlation matrix between composition and site species
         self.site_species_compositions = np.zeros((len(self.site_species_flat),
-                                                   len(self.set_site_species)),
+                                                   len(self.components)),
                                                   dtype='int')
         for i, ss in enumerate(self.site_species_flat):
-            self.site_species_compositions[i,
-                                           self.set_site_species.index(ss)] = 1
+            self.site_species_compositions[i, self.components.index(ss)] = 1
 
         clusters = itertools.product(*[np.identity(n_species, dtype='int')
                                        for n_species
@@ -136,16 +143,13 @@ class CSAModel(object):
 
     def compositional_array(self, composition):
         # first, make the numpy array
-        arr_c = np.zeros(len(self.set_site_species))
+        arr_c = np.zeros(len(self.components))
         for k, v in composition.items():
-            arr_c[self.set_site_species.index(k)] = v
+            arr_c[self.components.index(k)] = v
         return arr_c
 
-    def ground_state_cluster_proportions_from_composition(self, composition,
+    def ground_state_cluster_proportions_from_composition(self, c_arr,
                                                           normalize=True):
-
-        # first, make the numpy array
-        arr_c = self.compositional_array(composition)
 
         # Apply a small random tweak to all energies to force the
         # solver to converge to the state with the minimum number of clusters
@@ -158,7 +162,7 @@ class CSAModel(object):
         res = linprog(c=(self.cluster_energies_flat
                          + self._delta_cluster_energies),
                       A_eq=self.cluster_compositions.T,
-                      b_eq=arr_c,
+                      b_eq=c_arr,
                       bounds=[(0., 1.) for l in self.cluster_energies_flat],
                       method='revised simplex')
 
@@ -171,7 +175,7 @@ class CSAModel(object):
             proportions /= np.sum(res.x)
         return proportions
 
-    def maximum_entropy_cluster_proportions_from_composition(self, composition,
+    def maximum_entropy_cluster_proportions_from_composition(self, c_arr,
                                                              normalize=True):
         def minus_entropy(p_ind):
             p_s = self.independent_cluster_occupancies.T.dot(p_ind)
@@ -179,15 +183,13 @@ class CSAModel(object):
             S_s = np.sum(p_s*np.log(p_s/np.sum(norm_sum_p_s)))
             return S_s
 
-        c_arr = self.compositional_array(composition)
-
         cons = (LinearConstraint(self.independent_cluster_occupancies.T,
                                  0., 1.),
                 LinearConstraint(self.independent_cluster_compositions.T,
                                  c_arr, c_arr))
 
-        res = minimize(minus_entropy, (0., 0.25, 0.25, 0.25, 0.25),
-                       method='SLSQP', constraints=cons)
+        x0 = [1./(self.n_ind-1.) if i > 0 else 0. for i in range(self.n_ind)]
+        res = minimize(minus_entropy, x0, method='SLSQP', constraints=cons)
 
         # Normalise the proportions if required
         p_s = self.independent_cluster_occupancies.T.dot(res.x)
@@ -200,6 +202,7 @@ class CSAModel(object):
     def equilibrate(self, composition, temperature):
 
         occs = self.independent_cluster_occupancies.T
+        c_arr = self.compositional_array(composition)
 
         def energy(rxn_amounts, p_ind_start, rxn_matrix):
             p_ind = p_ind_start + rxn_matrix.T.dot(rxn_amounts)
@@ -231,8 +234,8 @@ class CSAModel(object):
         self.set_state(temperature)
 
         # Find ordered and disordered states to use as starting points
-        p_cl_grd = self.ground_state_cluster_proportions_from_composition(composition)
-        p_cl_max = self.maximum_entropy_cluster_proportions_from_composition(composition)
+        p_cl_grd = self.ground_state_cluster_proportions_from_composition(c_arr)
+        p_cl_max = self.maximum_entropy_cluster_proportions_from_composition(c_arr)
         p_ind_max = self.A_ind.T.dot(p_cl_max)
         p_s_max = occs.dot(p_ind_max)
 
@@ -284,22 +287,15 @@ class CSAModel(object):
     def _independent_ideal_cluster_proportions(self):
         occs = np.einsum('ij, j->ij', self.independent_cluster_occupancies,
                          self.p_s)
-
-        i = 0
-        proportions = np.ones(len(self.independent_cluster_occupancies))
-        for n_species in self.species_per_site:
-            proportions *= np.sum(occs[:, i:i+n_species], axis=1)
-            i += n_species
-        return proportions
+        return np.prod([np.sum(occs[:, i:i+n_species], axis=1)
+                        for i, n_species in self.site_index_tuples],
+                       axis=0)
 
     def _ideal_cluster_proportions(self, p_s):
         occs = np.einsum('ij, j->ij', self.cluster_occupancies, p_s)
-        i = 0
-        proportions = np.ones(len(self.cluster_occupancies))
-        for n_species in self.species_per_site:
-            proportions *= np.sum(occs[:, i:i+n_species], axis=1)
-            i += n_species
-        return proportions
+        return np.prod([np.sum(occs[:, i:i+n_species], axis=1)
+                        for i, n_species in self.site_index_tuples],
+                       axis=0)
 
     def _ground_state_cluster_proportions(self, p_ind):
         # Solve the linear programming problem

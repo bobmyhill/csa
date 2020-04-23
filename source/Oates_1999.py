@@ -94,19 +94,20 @@ for plti, alpha, beta, gamma, lmda in [(0, 0., 0., 1., 0.),
     interactions = np.array([[0., lmda/4.],
                              [lmda/4., 0.]])
 
+    ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R,
+                                                           alpha=alpha,
+                                                           beta=beta),
+                  gamma=gamma,
+                  site_species=[['A', 'B'], ['A', 'B'],
+                                ['A', 'B'], ['A', 'B']],
+                  compositional_interactions=interactions)
+
     for T in [0.5, 0.7, 0.9]:
         print('\n{0} {1}'.format(gamma, T))
         xs_equilibrium = []
         Gs_equilibrium = []
         for i, x in enumerate(xs):
             print('{0} / {1}'.format(i+1, len(xs)), end="\r")
-            ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R,
-                                                                   alpha=alpha,
-                                                                   beta=beta),
-                          gamma=gamma,
-                          site_species=[['A', 'B'], ['A', 'B'],
-                                        ['A', 'B'], ['A', 'B']],
-                          compositional_interactions=interactions)
 
             try:
                 ss.equilibrate(composition={'A': 4. * (1.-x), 'B': 4.*x},
@@ -123,18 +124,18 @@ for plti, alpha, beta, gamma, lmda in [(0, 0., 0., 1., 0.),
         for simplex in hull.simplices:
             ax1[3].plot(points[simplex, 0], points[simplex, 1], 'r--')
 
-        starts = []
-        ends = []
+        v_starts = []
+        v_ends = []
         n_vertices = len(hull.vertices)
         for i in range(1, n_vertices-1):
             if hull.vertices[i-1] < hull.vertices[i] - 1:
-                ss = points[hull.vertices[i-1]:hull.vertices[i-1]+2, 0]
-                starts.append(np.mean(ss))
-                es = points[hull.vertices[i]-1:hull.vertices[i]+1, 0]
-                ends.append(np.mean(es))
+                starts = points[hull.vertices[i-1]:hull.vertices[i-1]+2, 0]
+                v_starts.append(np.mean(starts))
+                ends = points[hull.vertices[i]-1:hull.vertices[i]+1, 0]
+                v_ends.append(np.mean(ends))
 
-        ax1[plti].scatter(starts, np.ones(len(starts))*T)
-        ax1[plti].scatter(ends, np.ones(len(ends))*T)
+        ax1[plti].scatter(v_starts, np.ones(len(v_starts))*T)
+        ax1[plti].scatter(v_ends, np.ones(len(v_ends))*T)
 
         if T == 0.4:
             ax1[3].plot(xs_equilibrium, Gs_equilibrium, label=plti)
