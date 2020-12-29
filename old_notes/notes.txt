@@ -1,0 +1,8 @@
+I doubt the above is clear, so I'll be more explicit now. I hope you'll bear with me!
+
+1) At high temperatures, a decent model for all solid solutions is the Compound Energy Formalism (Hillert, 2001). This formalism is parameterised using the energies E_i of all the endmembers in the system (whether they are charge balanced or not). The baseline energy E* of the system is taken to be:E* = sum(p_i*E_i)Where the proportions of the endmembers are taken to be the product of the species residing on each of the sites. So, for a solution with occupancies [A0.5B0.5][C0.2D0.8] there will be 4 endmembers (AC, AD, BC, BD). The proportion of AC will be 0.5*0.2 = 0.25.Excess energies can be added to this model.
+2) The CEF can be used to represent LRO, but not SRO. Sundman and Hillert have suggested fudges to model SRO, but these are only accurate close to the critical temperature at the midpoint composition.
+3) The CEF is also the HT limit of the quasichemical, CSA and CVM models.
+4) It turns out (so I found through several weeks of lockdown) that an Einstein function does a remarkably good job at predicting entropy due to SRO, at least in binary systems.
+5) If we can calculate the ground state energy (specifically a fictional one free of any zero-point entropy), then we can also write an analytical form for the energy as a function of temperature and site-occupancy. Such a function could be easily coded up in PerpleX/burnman/ENKI, and be used in petrological calculations.
+6) My problem is finding the (fictional) ground state energy as a function of site occupancies. This function should be smooth.

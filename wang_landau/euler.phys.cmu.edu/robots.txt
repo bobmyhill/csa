@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /widom/tmp/
+Disallow: /widom/hide/
+Disallow: ~qingao/
