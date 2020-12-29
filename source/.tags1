@@ -1,0 +1,66 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+site_species	/home/bob/projects/csa/source/blockmeanfield_model.py	/^site_species = [['A', 'B'], ['A', 'B'], ['A', 'B'], ['A', 'B']]$/;"	variable	line:10
+site_species_energies	/home/bob/projects/csa/source/blockmeanfield_model.py	/^site_species_energies = np.array([-1.,  1., -1.,  1., 1., -1., 1., -1.])*R$/;"	variable	line:11
+site_species_energies	/home/bob/projects/csa/source/blockmeanfield_model.py	/^site_species_energies = np.array([0., 0., 0., 0., 0., 0., 0., 0.])*R$/;"	variable	line:12
+bond_energies	/home/bob/projects/csa/source/blockmeanfield_model.py	/^bond_energies = np.array([[-0.,  0.,  0., -1.,  0., -1.,  0., -1.],$/;"	variable	line:14
+cluster_bonds_per_cluster	/home/bob/projects/csa/source/blockmeanfield_model.py	/^cluster_bonds_per_cluster = np.array([[0., 0., 4., 4., 4., 4., 4., 4.],$/;"	variable	line:23
+bridging_bonds_per_cluster	/home/bob/projects/csa/source/blockmeanfield_model.py	/^bridging_bonds_per_cluster = np.copy(cluster_bonds_per_cluster)$/;"	variable	line:32
+ss	/home/bob/projects/csa/source/blockmeanfield_model.py	/^ss = BlockMeanFieldModel(site_species=site_species,$/;"	variable	line:35
+site_species_energies	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                         site_species_energies=site_species_energies,$/;"	variable	line:36
+bond_energies	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                         bond_energies=bond_energies,$/;"	variable	line:37
+cluster_bonds_per_cluster	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                         cluster_bonds_per_cluster=cluster_bonds_per_cluster,$/;"	variable	line:38
+bridging_bonds_per_cluster	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                         bridging_bonds_per_cluster=bridging_bonds_per_cluster,$/;"	variable	line:39
+fraction_bridging_bonds_in_basic_cluster	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                         fraction_bridging_bonds_in_basic_cluster=0.75)$/;"	variable	line:40
+ps	/home/bob/projects/csa/source/blockmeanfield_model.py	/^ps = np.array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5])$/;"	variable	line:42
+temperatures	/home/bob/projects/csa/source/blockmeanfield_model.py	/^temperatures = np.linspace(0.1, 8., 101)$/;"	variable	line:43
+Ss	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss = np.empty_like(temperatures)$/;"	variable	line:44
+Es	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es = np.empty_like(temperatures)$/;"	variable	line:45
+Fs	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Fs = np.empty_like(temperatures)$/;"	variable	line:46
+fig	/home/bob/projects/csa/source/blockmeanfield_model.py	/^fig = plt.figure(figsize=(20,5))$/;"	variable	line:48
+ax	/home/bob/projects/csa/source/blockmeanfield_model.py	/^ax = [fig.add_subplot(1, 3, i) for i in range(1, 4)]$/;"	variable	line:49
+temperatures	/home/bob/projects/csa/source/blockmeanfield_model.py	/^temperatures = np.linspace(0.1, 4., 51)$/;"	variable	line:77
+Ss	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss = np.empty_like(temperatures)$/;"	variable	line:78
+Es	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es = np.empty_like(temperatures)$/;"	variable	line:79
+Fs	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Fs = np.empty_like(temperatures)$/;"	variable	line:80
+Ss2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss2 = np.empty_like(temperatures)$/;"	variable	line:81
+Es2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es2 = np.empty_like(temperatures)$/;"	variable	line:82
+Fs2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Fs2 = np.empty_like(temperatures)$/;"	variable	line:83
+label	/home/bob/projects/csa/source/blockmeanfield_model.py	/^               label='A{0}B{1}'.format(f, 4 - f), linestyle=':')$/;"	variable	line:111
+label	/home/bob/projects/csa/source/blockmeanfield_model.py	/^               label='A{0}B{1}'.format(f, 4 - f), linestyle=':')$/;"	variable	line:113
+label	/home/bob/projects/csa/source/blockmeanfield_model.py	/^               label='A{0}B{1}'.format(f, 4 - f), linestyle=':')$/;"	variable	line:115
+label	/home/bob/projects/csa/source/blockmeanfield_model.py	/^               label='A{0}B{1}'.format(f, 4 - f), linestyle=':')$/;"	variable	line:117
+temperatures	/home/bob/projects/csa/source/blockmeanfield_model.py	/^temperatures = np.linspace(0.1, 5., 101)$/;"	variable	line:125
+Ss	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss = np.empty_like(temperatures)$/;"	variable	line:126
+Ss2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss2 = np.empty_like(temperatures)$/;"	variable	line:127
+Ss3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss3 = np.empty_like(temperatures)$/;"	variable	line:128
+Es	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es = np.empty_like(temperatures)$/;"	variable	line:129
+Es2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es2 = np.empty_like(temperatures)$/;"	variable	line:130
+Es3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es3 = np.empty_like(temperatures)$/;"	variable	line:131
+Gs	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs = np.empty_like(temperatures)$/;"	variable	line:132
+Gs2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs2 = np.empty_like(temperatures)$/;"	variable	line:133
+Gs3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs3 = np.empty_like(temperatures)$/;"	variable	line:134
+fig	/home/bob/projects/csa/source/blockmeanfield_model.py	/^fig = plt.figure()$/;"	variable	line:136
+ax	/home/bob/projects/csa/source/blockmeanfield_model.py	/^ax = [fig.add_subplot(1, 3, i) for i in range(1, 4)]$/;"	variable	line:137
+ps	/home/bob/projects/csa/source/blockmeanfield_model.py	/^    ps = np.array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5])$/;"	variable	line:140
+S_IUCA	/home/bob/projects/csa/source/blockmeanfield_model.py	/^S_IUCA = cumtrapz(np.gradient(Es, temperatures)\/temperatures, temperatures,$/;"	variable	line:162
+initial	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                  initial=0.)$/;"	variable	line:163
+label	/home/bob/projects/csa/source/blockmeanfield_model.py	/^           label='IUCA')$/;"	variable	line:165
+fig	/home/bob/projects/csa/source/blockmeanfield_model.py	/^fig = plt.figure()$/;"	variable	line:176
+ax	/home/bob/projects/csa/source/blockmeanfield_model.py	/^ax = [fig.add_subplot(2, 3, i) for i in range(1, 7)]$/;"	variable	line:177
+temperatures	/home/bob/projects/csa/source/blockmeanfield_model.py	/^temperatures = np.linspace(0.05, 2., 101)$/;"	variable	line:179
+fs	/home/bob/projects/csa/source/blockmeanfield_model.py	/^fs = np.linspace(0.01, 0.5, 51)$/;"	variable	line:180
+Ss	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss = np.empty_like(fs)$/;"	variable	line:181
+Ss2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss2 = np.empty_like(fs)$/;"	variable	line:182
+Ss3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss3 = np.empty_like(fs)$/;"	variable	line:183
+Es	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es = np.empty_like(fs)$/;"	variable	line:184
+Es2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es2 = np.empty_like(fs)$/;"	variable	line:185
+Es3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es3 = np.empty_like(fs)$/;"	variable	line:186
+Gs	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs = np.empty_like(fs)$/;"	variable	line:187
+Gs2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs2 = np.empty_like(fs)$/;"	variable	line:188
+Gs3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs3 = np.empty_like(fs)$/;"	variable	line:189
+ps	/home/bob/projects/csa/source/blockmeanfield_model.py	/^        ps = np.array([f, 1.-f, f, 1.-f, 1.-f, f, 1.-f, f])$/;"	variable	line:194

@@ -1,0 +1,507 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+logish	/home/bob/projects/csa/source/check_mu_Senderov.py	/^def logish(x, eps=1.e-5):$/;"	function	line:10
+run_inversion	/home/bob/projects/csa/source/check_mu_Senderov.py	/^run_inversion=True$/;"	variable	line:21
+start	/home/bob/projects/csa/source/check_mu_Senderov.py	/^start = time.time()$/;"	variable	line:22
+names	/home/bob/projects/csa/source/check_mu_Senderov.py	/^names = ['ASSS',$/;"	variable	line:25
+E_mbr	/home/bob/projects/csa/source/check_mu_Senderov.py	/^E_mbr = np.array([[1., 0., 0., 1., 0., 1., 0., 1.],$/;"	variable	line:49
+E_ind	/home/bob/projects/csa/source/check_mu_Senderov.py	/^E_ind = []$/;"	variable	line:67
+E_ind	/home/bob/projects/csa/source/check_mu_Senderov.py	/^E_ind = np.array(E_ind)$/;"	variable	line:71
+R	/home/bob/projects/csa/source/check_mu_Senderov.py	/^R = 8.31446$/;"	variable	line:74
+fns	/home/bob/projects/csa/source/check_mu_Senderov.py	/^def fns(u, n, Appn, T):$/;"	function	line:80
+solfn	/home/bob/projects/csa/source/check_mu_Senderov.py	/^    def solfn(x):$/;"	function	line:82	function:fns
+T	/home/bob/projects/csa/source/check_mu_Senderov.py	/^T = 6000.\/R$/;"	variable	line:99
+u0	/home/bob/projects/csa/source/check_mu_Senderov.py	/^u0 = 0.$/;"	variable	line:100
+e1	/home/bob/projects/csa/source/check_mu_Senderov.py	/^e1 = 4000.*fac$/;"	variable	line:101
+e2	/home/bob/projects/csa/source/check_mu_Senderov.py	/^e2 = 8000.*fac$/;"	variable	line:102
+n	/home/bob/projects/csa/source/check_mu_Senderov.py	/^n = 1.$/;"	variable	line:103
+u	/home/bob/projects/csa/source/check_mu_Senderov.py	/^u = u0 + np.array([0., 0.25*e1, 0.5*e1, 0.5*e1, 0.5*e1,$/;"	variable	line:106
+calculate_squared_reaction_energies	/home/bob/projects/csa/source/check_mu_Senderov.py	/^def calculate_squared_reaction_energies(E_mbr, u):$/;"	function	line:118
+half_u_rxn_sqr	/home/bob/projects/csa/source/check_mu_Senderov.py	/^half_u_rxn_sqr = calculate_squared_reaction_energies(E_mbr, u)\/2.$/;"	variable	line:130
+a	/home/bob/projects/csa/source/check_mu_Senderov.py	/^a = np.exp(-u\/(R*T))$/;"	variable	line:132
+calculate_energies	/home/bob/projects/csa/source/check_mu_Senderov.py	/^def calculate_energies(ps):$/;"	function	line:144
+xs	/home/bob/projects/csa/source/check_mu_Senderov.py	/^xs = np.linspace(0.07, 0.93, 1001)$/;"	variable	line:161
+Es	/home/bob/projects/csa/source/check_mu_Senderov.py	/^Es = []$/;"	variable	line:162
+ps	/home/bob/projects/csa/source/check_mu_Senderov.py	/^    ps = np.array([x, 1.-x, 1.-x, x,$/;"	variable	line:164
+ps	/home/bob/projects/csa/source/check_mu_Senderov.py	/^    ps = np.array([x, 1.-x, 1.-x, x,$/;"	variable	line:174
+ab	/home/bob/projects/csa/source/check_mu_Senderov.py	/^    ab = a0[names.index('SAAA')]$/;"	variable	line:178
+ae	/home/bob/projects/csa/source/check_mu_Senderov.py	/^    ae = a0[names.index('ASSS')]$/;"	variable	line:179
+am	/home/bob/projects/csa/source/check_mu_Senderov.py	/^    am = x*ae + (1. - x)*ab$/;"	variable	line:180
+R	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^R = 8.31446$/;"	variable	line:8
+T	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^T = 6000.\/R$/;"	variable	line:9
+u0	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^u0 = 0.$/;"	variable	line:10
+e1	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^e1 = 4000.*fac$/;"	variable	line:11
+e2	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^e2 = 8000.*fac$/;"	variable	line:12
+n	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^n = 1.$/;"	variable	line:13
+n_species	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^n_species = 2$/;"	variable	line:16
+u	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^u = np.zeros((n_species, n_species,$/;"	variable	line:17
+id	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^id = np.identity(n_species, dtype='int')$/;"	variable	line:37
+ones	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^ones = np.ones((n_species,n_species,n_species), dtype='int')$/;"	variable	line:38
+element_occupancies	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^element_occupancies = np.array([np.einsum('im, jkl -> ijklm', id, ones),$/;"	variable	line:39
+element_occupancies	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^element_occupancies = np.moveaxis(element_occupancies, 0, -2)$/;"	variable	line:43
+element_occupancies	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^element_occupancies = element_occupancies.reshape((16,8))$/;"	variable	line:44
+u	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^u = u.flatten()$/;"	variable	line:45
+occ	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^occ = Matrix(element_occupancies)$/;"	variable	line:47
+element_occupancies_ind	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^element_occupancies_ind = np.array(occ.T.columnspace(), dtype='int')$/;"	variable	line:48
+element_occupancies_ind	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^element_occupancies_ind = np.array([[1, 0, 0, 1, 0, 1, 0, 1],$/;"	variable	line:49
+E_ind	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^E_ind = np.linalg.lstsq(element_occupancies_ind.T,$/;"	variable	line:55
+rcond	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^                        rcond=None)[0].round(decimals=10).T$/;"	variable	line:57
+cluster_proportions	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^def cluster_proportions(mu, T):$/;"	function	line:59
+delta_proportions_minimize	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^def delta_proportions_minimize(mu, p_ind, T):$/;"	function	line:63
+delta_proportions_root	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^def delta_proportions_root(mu, p_ind, T):$/;"	function	line:68
+logish	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^def logish(x, eps=1.e-5):$/;"	function	line:73
+guess	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^def guess(p_ind, T):$/;"	function	line:84
+ys	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^ys = np.linspace(0., 1., 101)$/;"	variable	line:108
+gamma	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^gamma = 4.\/3. # S_i\/(S_i-S_n)$/;"	variable	line:112
+ps_to_p_ind	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^ps_to_p_ind = np.linalg.pinv(element_occupancies_ind.T)$/;"	variable	line:114
+fig	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^fig = plt.figure()$/;"	variable	line:116
+ax	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^ax = [fig.add_subplot(2, 2, i) for i in range(1, 5)]$/;"	variable	line:117
+sols	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^    sols = []$/;"	variable	line:121
+ps	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^        ps = np.array([y, 1.-y,$/;"	variable	line:123
+p_ind	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^        p_ind = ps_to_p_ind.dot(ps)$/;"	variable	line:127
+sol	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^        sol = root(delta_proportions_root, guess(p_ind, T), args=(p_ind, T))$/;"	variable	line:128
+mu	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^            mu = sol.x$/;"	variable	line:130
+p_cl	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^            p_cl = cluster_proportions(mu, T)$/;"	variable	line:132
+S_n	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^            S_n = -R*np.sum(p_cl*logish(p_cl))$/;"	variable	line:133
+S_i	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^            S_i = -R*np.sum(ps*logish(ps))$/;"	variable	line:134
+n	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^            n = 1. # 1 cluster total$/;"	variable	line:137
+S_t	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^            S_t = gamma*S_n + (1.\/n - gamma)*S_i$/;"	variable	line:138
+G_t	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^            G_t = np.sum(p_cl*u) - T*S_t$/;"	variable	line:140
+sols	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^    sols = np.array(sols).T$/;"	variable	line:145
+c	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^        c = 'black'$/;"	variable	line:147
+c	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^        c = 'red'$/;"	variable	line:149
+linewidth	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^    linewidth = 0.5$/;"	variable	line:151
+linestyle	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^        linestyle='-'$/;"	variable	line:153
+linestyle	/home/bob/projects/csa/source/Senderov_1980_w_root_implemented.py	/^        linestyle=':'$/;"	variable	line:155
+run_inversion	/home/bob/projects/csa/source/Senderov_1980.py	/^run_inversion=True$/;"	variable	line:10
+start	/home/bob/projects/csa/source/Senderov_1980.py	/^start = time.time()$/;"	variable	line:11
+names	/home/bob/projects/csa/source/Senderov_1980.py	/^names = ['ASSS',$/;"	variable	line:14
+E_mbr	/home/bob/projects/csa/source/Senderov_1980.py	/^E_mbr = np.array([[1., 0., 0., 1., 0., 1., 0., 1.],$/;"	variable	line:38
+R	/home/bob/projects/csa/source/Senderov_1980.py	/^R = 8.31446$/;"	variable	line:63
+fns	/home/bob/projects/csa/source/Senderov_1980.py	/^def fns(u, n, Appn, T):$/;"	function	line:69
+solfn	/home/bob/projects/csa/source/Senderov_1980.py	/^    def solfn(x):$/;"	function	line:71	function:fns
+T	/home/bob/projects/csa/source/Senderov_1980.py	/^T = 6000.\/R$/;"	variable	line:88
+u0	/home/bob/projects/csa/source/Senderov_1980.py	/^u0 = 0.$/;"	variable	line:89
+e1	/home/bob/projects/csa/source/Senderov_1980.py	/^e1 = 4000.*fac$/;"	variable	line:90
+e2	/home/bob/projects/csa/source/Senderov_1980.py	/^e2 = 8000.*fac$/;"	variable	line:91
+n	/home/bob/projects/csa/source/Senderov_1980.py	/^n = 1.$/;"	variable	line:92
+u	/home/bob/projects/csa/source/Senderov_1980.py	/^u = u0 + np.array([0., 0.25*e1, 0.5*e1, 0.5*e1, 0.5*e1,$/;"	variable	line:95
+a	/home/bob/projects/csa/source/Senderov_1980.py	/^a = np.exp(-u\/(R*T))$/;"	variable	line:100
+fig	/home/bob/projects/csa/source/Senderov_1980.py	/^fig = plt.figure(figsize=(12,12))$/;"	variable	line:102
+ax	/home/bob/projects/csa/source/Senderov_1980.py	/^ax = [fig.add_subplot(2, 2, i) for i in range(1, 5)]$/;"	variable	line:103
+us	/home/bob/projects/csa/source/Senderov_1980.py	/^us = np.array([u[names.index('SASS')],$/;"	variable	line:106
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980.py	/^    numerical_solution = []$/;"	variable	line:119
+ideal_model	/home/bob/projects/csa/source/Senderov_1980.py	/^    ideal_model = []$/;"	variable	line:120
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980.py	/^    nonideal_1st_order = []$/;"	variable	line:121
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980.py	/^    nonideal_2nd_order = []$/;"	variable	line:122
+end	/home/bob/projects/csa/source/Senderov_1980.py	/^    end = time.time()$/;"	variable	line:269
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980.py	/^    numerical_solution = np.array(numerical_solution)$/;"	variable	line:272
+ideal_model	/home/bob/projects/csa/source/Senderov_1980.py	/^    ideal_model = np.array(ideal_model)$/;"	variable	line:273
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980.py	/^    nonideal_1st_order = np.array(nonideal_1st_order)$/;"	variable	line:274
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980.py	/^    nonideal_2nd_order = np.array(nonideal_2nd_order)$/;"	variable	line:275
+ys	/home/bob/projects/csa/source/Senderov_1980.py	/^ys = np.linspace(0., 1., 1001)$/;"	variable	line:296
+convoluplot	/home/bob/projects/csa/source/convolve.py	/^def convoluplot(signal, kernel):$/;"	function	line:5
+signal	/home/bob/projects/csa/source/convolve.py	/^signal = np.zeros(500)$/;"	variable	line:16
+kernel	/home/bob/projects/csa/source/convolve.py	/^kernel = gaussian(100, 10)$/;"	variable	line:19
+E	/home/bob/projects/csa/source/test_grad.py	/^E = np.array([1.5, 2., 4., 7., 9., 11., 16., 20., 23.])$/;"	variable	line:4
+calculate_energies	/home/bob/projects/csa/source/test_grad.py	/^def calculate_energies(p):$/;"	function	line:7
+xs	/home/bob/projects/csa/source/test_grad.py	/^xs = np.linspace(0.001, 0.999, 101)$/;"	variable	line:29
+us	/home/bob/projects/csa/source/test_grad.py	/^us = np.empty_like(xs)$/;"	variable	line:30
+p	/home/bob/projects/csa/source/test_grad.py	/^    p = np.array([1.-x, x, 1.-x, x, 1.-x, x, 1.-x, x])$/;"	variable	line:32
+p	/home/bob/projects/csa/source/test_grad.py	/^    p = np.array([1.-x, x, 1.-x, x, 1.-x, x, 1.-x, x])$/;"	variable	line:39
+E_0	/home/bob/projects/csa/source/test_grad.py	/^    E_0 = calculate_energies(p)$/;"	variable	line:41
+p	/home/bob/projects/csa/source/test_grad.py	/^    p = np.array([1.-x, x, 1.-x, x, 1.-x, x, 1.-x, x])$/;"	variable	line:44
+E_1	/home/bob/projects/csa/source/test_grad.py	/^    E_1 = calculate_energies(p)$/;"	variable	line:45
+mu0246	/home/bob/projects/csa/source/test_grad.py	/^    mu0246 = (p[0]*p[2]*p[4]*E[0] + p[0]*p[2]*p[6]*E[0] + p[0]*p[4]*p[6]*E[0]$/;"	variable	line:48
+mu1357	/home/bob/projects/csa/source/test_grad.py	/^    mu1357 = (-3.*(p[0]*p[2]*p[4]*p[6])*E[0]$/;"	variable	line:52
+calculate_energies	/home/bob/projects/csa/source/test_grad.py	/^def calculate_energies(p):$/;"	function	line:62
+xs	/home/bob/projects/csa/source/test_grad.py	/^xs = np.linspace(0.001, 0.999, 101)$/;"	variable	line:66
+us	/home/bob/projects/csa/source/test_grad.py	/^us = np.empty_like(xs)$/;"	variable	line:67
+p	/home/bob/projects/csa/source/test_grad.py	/^    p = np.array([1.-x, x, 1.-x, x, 1.-x, x])$/;"	variable	line:69
+p	/home/bob/projects/csa/source/test_grad.py	/^    p = np.array([1.-x, x, 1.-x, x, 1.-x, x])$/;"	variable	line:76
+E_0	/home/bob/projects/csa/source/test_grad.py	/^    E_0 = calculate_energies(p)$/;"	variable	line:78
+p	/home/bob/projects/csa/source/test_grad.py	/^    p = np.array([1.-x, x, 1.-x, x, 1.-x, x])$/;"	variable	line:81
+E_1	/home/bob/projects/csa/source/test_grad.py	/^    E_1 = calculate_energies(p)$/;"	variable	line:82
+mu024	/home/bob/projects/csa/source/test_grad.py	/^    mu024 = (p[0]*p[2]*E[0] + p[0]*p[4]*E[0] + p[2]*p[4]*E[0] - 2.*(p[0]*p[2]*p[4])*E[0]$/;"	variable	line:85
+mu135	/home/bob/projects/csa/source/test_grad.py	/^    mu135 = (-2.*(p[0]*p[2]*p[4])*E[0]$/;"	variable	line:87
+calculate_energies	/home/bob/projects/csa/source/test_grad.py	/^def calculate_energies(p):$/;"	function	line:96
+xs	/home/bob/projects/csa/source/test_grad.py	/^xs = np.linspace(0.001, 0.999, 101)$/;"	variable	line:100
+us	/home/bob/projects/csa/source/test_grad.py	/^us = np.empty_like(xs)$/;"	variable	line:101
+p	/home/bob/projects/csa/source/test_grad.py	/^    p = np.array([1.-x, x, 1.-x, x])$/;"	variable	line:103
+p	/home/bob/projects/csa/source/test_grad.py	/^    p = np.array([1.-x, x, 1.-x, x])$/;"	variable	line:109
+E_0	/home/bob/projects/csa/source/test_grad.py	/^    E_0 = calculate_energies(p)$/;"	variable	line:111
+p	/home/bob/projects/csa/source/test_grad.py	/^    p = np.array([1.-x, x, 1.-x, x])$/;"	variable	line:114
+E_1	/home/bob/projects/csa/source/test_grad.py	/^    E_1 = calculate_energies(p)$/;"	variable	line:115
+mu02	/home/bob/projects/csa/source/test_grad.py	/^    mu02 = p[0]*E[0] + p[2]*E[0] - (p[0]*p[2])*E[0]  + p[1]*E[1] - p[1]*p[2]*E[1] + p[3]*E[2] - p[0]*p[3]*E[2]$/;"	variable	line:118
+mu13	/home/bob/projects/csa/source/test_grad.py	/^    mu13 = -(p[0]*p[2])*E[0] + p[2]*E[1] - p[1]*p[2]*E[1] + p[0]*E[2] - p[0]*p[3]*E[2] # i.e. variables are treated separately.$/;"	variable	line:119
+logish	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^def logish(x, eps=1.e-5):$/;"	function	line:10
+run_inversion	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^run_inversion=True$/;"	variable	line:21
+start	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^start = time.time()$/;"	variable	line:22
+R	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^R = 8.31446$/;"	variable	line:24
+fns	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^def fns(u, n, Appn, T):$/;"	function	line:30
+solfn	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^    def solfn(x):$/;"	function	line:32	function:fns
+T	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^T = 6000.\/R$/;"	variable	line:48
+u0	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^u0 = 0.$/;"	variable	line:49
+e1	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^e1 = 4000.*fac$/;"	variable	line:50
+e2	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^e2 = 8000.*fac$/;"	variable	line:51
+n	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^n = 1.$/;"	variable	line:52
+u	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^u = np.zeros((2, 2, 2, 2)) + u0$/;"	variable	line:55
+a	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^a = np.exp(-u\/(R*T))$/;"	variable	line:73
+calculate_squared_reaction_energies	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^def calculate_squared_reaction_energies(u):$/;"	function	line:75
+half_u_rxn_sqr	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^half_u_rxn_sqr = calculate_squared_reaction_energies(u)\/2.$/;"	variable	line:121
+energy_components	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^def energy_components(ps, T):$/;"	function	line:123
+chemical_potentials	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^def chemical_potentials(ps, T):$/;"	function	line:132
+fig	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^fig = plt.figure(figsize=(12,12))$/;"	variable	line:168
+ax	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^ax = [fig.add_subplot(2, 2, i) for i in range(1, 5)]$/;"	variable	line:169
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^    numerical_solution = []$/;"	variable	line:177
+ideal_model	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^    ideal_model = []$/;"	variable	line:178
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^    nonideal_1st_order = []$/;"	variable	line:179
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^    nonideal_2nd_order = []$/;"	variable	line:180
+bless	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^    bless = []$/;"	variable	line:181
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 1.-y]) # proportion of A on each site$/;"	variable	line:184
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 0.0001]) # proportion of A on each site$/;"	variable	line:186
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^            Appn = np.array([y, y, 0.4001, 0.0001]) # proportion of A on each site$/;"	variable	line:188
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^            Appn = np.array([y, 1.-y, 0.2001, 0.2001]) # proportion of A on each site$/;"	variable	line:190
+ps	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^        ps = np.array([[Appn[0], 1.-Appn[0]],$/;"	variable	line:193
+cluster_energies	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^        cluster_energies = ideal + non_ideal + non_ideal_2$/;"	variable	line:199
+mu	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^        mu = chemical_potentials(ps, T)$/;"	variable	line:200
+logx_approx	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^        logx_approx = np.array([mu[1,1,1,1],$/;"	variable	line:202
+arr	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^        arr = np.array([1., Appn[0], Appn[1], Appn[2], Appn[3]])$/;"	variable	line:210
+x	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^        x = np.exp(logx_approx)$/;"	variable	line:211
+p	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^        p = np.sum(arr*logx_approx) # position in solution space, phi - psi, Equation 10.$/;"	variable	line:212
+xfn	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^        xfn = x[0]*np.einsum('i, j, k, l->ijkl',$/;"	variable	line:216
+pfn	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^        pfn = xfn*a$/;"	variable	line:220
+M2	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^        M2 = pfn\/np.sum(pfn) # fractions of different clusters$/;"	variable	line:221
+x	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^            x = newton_krylov(fns(u, n, Appn, T), np.exp(logx_approx)+np.random.rand(1)*1.e-5,$/;"	variable	line:242
+p	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^            p = np.sum(arr*np.log(x)) # position in solution space, phi - psi, Equation 10.$/;"	variable	line:248
+xfn	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^            xfn = x[0]*np.einsum('i, j, k, l->ijkl',$/;"	variable	line:252
+pfn	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^            pfn = xfn*a$/;"	variable	line:256
+M	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^            M = pfn\/np.sum(pfn) # fractions of different clusters$/;"	variable	line:257
+p	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^            p=0$/;"	variable	line:262
+end	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^    end = time.time()$/;"	variable	line:269
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^    numerical_solution = np.array(numerical_solution)$/;"	variable	line:272
+ideal_model	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^    ideal_model = np.array(ideal_model)$/;"	variable	line:273
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^    nonideal_1st_order = np.array(nonideal_1st_order)$/;"	variable	line:274
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980_mu.py	/^    nonideal_2nd_order = np.array(nonideal_2nd_order)$/;"	variable	line:275
+logish	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^def logish(x, eps=1.e-5):$/;"	function	line:10
+run_inversion	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^run_inversion=True$/;"	variable	line:21
+start	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^start = time.time()$/;"	variable	line:22
+R	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^R = 8.31446$/;"	variable	line:24
+fns	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^def fns(u, n, Appn, T):$/;"	function	line:30
+solfn	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^    def solfn(x):$/;"	function	line:32	function:fns
+T	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^T = 6000.\/R$/;"	variable	line:48
+u0	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^u0 = 0.$/;"	variable	line:49
+e1	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^e1 = 0000.*fac$/;"	variable	line:50
+e2	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^e2 = 0000.*fac$/;"	variable	line:51
+n	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^n = 1.$/;"	variable	line:52
+u	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^u = np.zeros((2, 2, 2, 2)) + u0$/;"	variable	line:55
+a	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^a = np.exp(-u\/(R*T))$/;"	variable	line:73
+calculate_squared_reaction_energies	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^def calculate_squared_reaction_energies(u):$/;"	function	line:76
+half_u_rxn_sqr	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^half_u_rxn_sqr = calculate_squared_reaction_energies(u)\/2.$/;"	variable	line:122
+fig	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^fig = plt.figure(figsize=(12,12))$/;"	variable	line:126
+ax	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^ax = [fig.add_subplot(2, 2, i) for i in range(1, 5)]$/;"	variable	line:127
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^    numerical_solution = []$/;"	variable	line:135
+ideal_model	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^    ideal_model = []$/;"	variable	line:136
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^    nonideal_1st_order = []$/;"	variable	line:137
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^    nonideal_2nd_order = []$/;"	variable	line:138
+bless	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^    bless = []$/;"	variable	line:139
+Appn	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 1.-y]) # proportion of A on each site$/;"	variable	line:142
+Appn	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 0.0001]) # proportion of A on each site$/;"	variable	line:144
+Appn	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^            Appn = np.array([y, y, 0.0001, 0.0001]) # proportion of A on each site$/;"	variable	line:146
+Appn	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^            Appn = np.array([y, 1.-y, 0.0001, 0.0001]) # proportion of A on each site$/;"	variable	line:148
+x	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^                x = newton_krylov(fns(u, n, Appn, T), [1., 1., 1., 1., 1.],$/;"	variable	line:153
+x	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^                x = newton_krylov(fns(u, n, Appn, T), x,$/;"	variable	line:156
+xfn	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^            xfn = x[0]*np.einsum('i, j, k, l->ijkl',$/;"	variable	line:160
+pfn	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^            pfn = xfn*a$/;"	variable	line:164
+M	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^            M = pfn\/np.sum(pfn) # fractions of different clusters$/;"	variable	line:165
+arr	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^            arr = np.array([1., Appn[0], Appn[1], Appn[2], Appn[3]])$/;"	variable	line:170
+p	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^            p = np.sum(arr*np.log(x))$/;"	variable	line:171
+p	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^            p=0$/;"	variable	line:175
+ps	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        ps = np.array([[Appn[0], 1.-Appn[0]],$/;"	variable	line:178
+ideal	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        ideal = np.sum(ps*np.log(ps)) # same as position in solution space when energies are equal to zero$/;"	variable	line:183
+non_ideal	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        non_ideal = np.einsum('i, j, k, l, ijkl->', ps[0], ps[1], ps[2], ps[3], u\/(R*T))$/;"	variable	line:184
+non_ideal_2	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        non_ideal_2 = -np.einsum('i, j, k, l, m, n, o, p, ijklmnop ->',$/;"	variable	line:185
+cluster_energies	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        cluster_energies = ideal + non_ideal + non_ideal_2$/;"	variable	line:189
+id	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        id = np.identity(2)$/;"	variable	line:192
+id2	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        id2 = np.einsum('im, jn, ko, lp->ijklmnop', id, id, id, id)$/;"	variable	line:193
+log_ideal_activities	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        log_ideal_activities = (np.einsum('ijklmnop, m->ijkl', id2, logish(ps[0]))$/;"	variable	line:194
+o	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        o = np.ones(2)$/;"	variable	line:201
+idooo	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        idooo = np.einsum('im, j, k, l->imjkl', id, o, o, o)$/;"	variable	line:202
+log_nonideal_activities	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        log_nonideal_activities = (np.einsum('imjkl, n, o, p, mnop->ijkl', idooo, ps[1], ps[2], ps[3], u\/(R*T))$/;"	variable	line:203
+ursq	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        ursq = half_u_rxn_sqr\/((R*T)**2)$/;"	variable	line:210
+log_nonideal_activities_2	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        log_nonideal_activities_2 = -(np.einsum('imjkl, n, o, p, q, r, s, t, mnopqrst->ijkl', idooo, ps[1], ps[2], ps[3], ps[0], ps[1], ps[2], ps[3], ursq)$/;"	variable	line:211
+log_activities	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        log_activities = log_ideal_activities + log_nonideal_activities + log_nonideal_activities_2$/;"	variable	line:221
+mod	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        mod = cluster_energies - np.einsum('i, j, k, l, ijkl->', ps[0], ps[1], ps[2], ps[3], log_activities)$/;"	variable	line:222
+activities	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        activities = np.exp(log_activities)$/;"	variable	line:225
+M2	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^        M2 = activities\/np.sum(activities)$/;"	variable	line:227
+end	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^    end = time.time()$/;"	variable	line:249
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^    numerical_solution = np.array(numerical_solution)$/;"	variable	line:252
+ideal_model	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^    ideal_model = np.array(ideal_model)$/;"	variable	line:253
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^    nonideal_1st_order = np.array(nonideal_1st_order)$/;"	variable	line:254
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980_opt_recast.py	/^    nonideal_2nd_order = np.array(nonideal_2nd_order)$/;"	variable	line:255
+logish	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^def logish(x, eps=1.e-5):$/;"	function	line:10
+run_inversion	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^run_inversion=True$/;"	variable	line:21
+start	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^start = time.time()$/;"	variable	line:22
+R	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^R = 8.31446$/;"	variable	line:24
+fns	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^def fns(u, n, Appn, T):$/;"	function	line:30
+solfn	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^    def solfn(x):$/;"	function	line:32	function:fns
+T	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^T = 6000.\/R$/;"	variable	line:48
+u0	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^u0 = 0.$/;"	variable	line:49
+e1	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^e1 = 4000.*fac$/;"	variable	line:50
+e2	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^e2 = 8000.*fac$/;"	variable	line:51
+n	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^n = 1.$/;"	variable	line:52
+u	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^u = np.zeros((2, 2, 2, 2)) + u0$/;"	variable	line:55
+a	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^a = np.exp(-u\/(R*T))$/;"	variable	line:73
+calculate_squared_reaction_energies	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^def calculate_squared_reaction_energies(u):$/;"	function	line:76
+half_u_rxn_sqr	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^half_u_rxn_sqr = calculate_squared_reaction_energies(u)\/2.$/;"	variable	line:122
+energy	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^def energy(ps, T):$/;"	function	line:124
+chempot	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^def chempot(ps, T):$/;"	function	line:133
+fig	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^fig = plt.figure(figsize=(12,12))$/;"	variable	line:168
+ax	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^ax = [fig.add_subplot(2, 2, i) for i in range(1, 5)]$/;"	variable	line:169
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^    numerical_solution = []$/;"	variable	line:177
+ideal_model	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^    ideal_model = []$/;"	variable	line:178
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^    nonideal_1st_order = []$/;"	variable	line:179
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^    nonideal_2nd_order = []$/;"	variable	line:180
+bless	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^    bless = []$/;"	variable	line:181
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 1.-y]) # proportion of A on each site$/;"	variable	line:184
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 0.2001]) # proportion of A on each site$/;"	variable	line:186
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^            Appn = np.array([y, y, 0.4001, 0.0001]) # proportion of A on each site$/;"	variable	line:188
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^            Appn = np.array([y, 1.-y, 0.2001, 0.2001]) # proportion of A on each site$/;"	variable	line:190
+ps	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        ps = np.array([[Appn[0], 1.-Appn[0]],$/;"	variable	line:193
+cluster_energies	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        cluster_energies = ideal + non_ideal + non_ideal_2$/;"	variable	line:199
+mu	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        mu = chempot(ps, T)$/;"	variable	line:200
+dp	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        dp = 0.000001$/;"	variable	line:202
+cl	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        cl = np.array([[0., 1.],$/;"	variable	line:203
+ps2	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        ps2 = ps + (cl-ps)*dp$/;"	variable	line:207
+E2	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        E2 = ideal + non_ideal + non_ideal_2$/;"	variable	line:210
+dE	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        dE = (E2 - cluster_energies)$/;"	variable	line:211
+logx_approx	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        logx_approx = np.array([mu[1,1,1,1],$/;"	variable	line:217
+arr	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        arr = np.array([1., Appn[0], Appn[1], Appn[2], Appn[3]])$/;"	variable	line:225
+x	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        x = np.exp(logx_approx)$/;"	variable	line:226
+p	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        p = np.sum(arr*logx_approx) # position in solution space, phi - psi, Equation 10.$/;"	variable	line:227
+xfn	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        xfn = x[0]*np.einsum('i, j, k, l->ijkl',$/;"	variable	line:231
+pfn	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        pfn = xfn*a$/;"	variable	line:235
+M2	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^        M2 = pfn\/np.sum(pfn) # fractions of different clusters$/;"	variable	line:236
+x	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^            x = newton_krylov(fns(u, n, Appn, T), np.exp(logx_approx)+np.random.rand(1)*1.e-5,$/;"	variable	line:253
+p	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^            p = np.sum(arr*np.log(x)) # position in solution space, phi - psi, Equation 10.$/;"	variable	line:259
+xfn	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^            xfn = x[0]*np.einsum('i, j, k, l->ijkl',$/;"	variable	line:263
+pfn	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^            pfn = xfn*a$/;"	variable	line:267
+M	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^            M = pfn\/np.sum(pfn) # fractions of different clusters$/;"	variable	line:268
+p	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^            p=0$/;"	variable	line:273
+end	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^    end = time.time()$/;"	variable	line:280
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^    numerical_solution = np.array(numerical_solution)$/;"	variable	line:283
+ideal_model	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^    ideal_model = np.array(ideal_model)$/;"	variable	line:284
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^    nonideal_1st_order = np.array(nonideal_1st_order)$/;"	variable	line:285
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980_mu_check.py	/^    nonideal_2nd_order = np.array(nonideal_2nd_order)$/;"	variable	line:286
+logish	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^def logish(x, eps=1.e-5):$/;"	function	line:10
+run_inversion	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^run_inversion=True$/;"	variable	line:21
+start	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^start = time.time()$/;"	variable	line:22
+names	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^names = ['ASSS',$/;"	variable	line:25
+E_mbr	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^E_mbr = np.array([[1., 0., 0., 1., 0., 1., 0., 1.],$/;"	variable	line:49
+R	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^R = 8.31446$/;"	variable	line:74
+fns	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^def fns(u, n, Appn, T):$/;"	function	line:80
+solfn	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^    def solfn(x):$/;"	function	line:82	function:fns
+T	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^T = 6000.\/R$/;"	variable	line:99
+u0	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^u0 = 0.$/;"	variable	line:100
+e1	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^e1 = 4000.*fac$/;"	variable	line:101
+e2	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^e2 = 8000.*fac$/;"	variable	line:102
+n	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^n = 1.$/;"	variable	line:103
+u	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^u = u0 + np.array([0., 0.25*e1, 0.5*e1, 0.5*e1, 0.5*e1,$/;"	variable	line:106
+calculate_squared_reaction_energies	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^def calculate_squared_reaction_energies(E_mbr, u):$/;"	function	line:112
+half_u_rxn_sqr	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^half_u_rxn_sqr = calculate_squared_reaction_energies(E_mbr, u)\/2.$/;"	variable	line:124
+a	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^a = np.exp(-u\/(R*T))$/;"	variable	line:126
+fig	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^fig = plt.figure(figsize=(12,12))$/;"	variable	line:128
+ax	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^ax = [fig.add_subplot(2, 2, i) for i in range(1, 5)]$/;"	variable	line:129
+us	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^us = np.array([u[names.index('SASS')],$/;"	variable	line:132
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^    numerical_solution = []$/;"	variable	line:143
+ideal_model	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^    ideal_model = []$/;"	variable	line:144
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^    nonideal_1st_order = []$/;"	variable	line:145
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^    nonideal_2nd_order = []$/;"	variable	line:146
+Appn	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 1.-y]) # proportion of A on each site$/;"	variable	line:150
+Appn	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 0.0001]) # proportion of A on each site$/;"	variable	line:152
+Appn	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^            Appn = np.array([y, y, 0.0001, 0.0001]) # proportion of A on each site$/;"	variable	line:154
+Appn	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^            Appn = np.array([y, 1.-y, 0.0001, 0.0001]) # proportion of A on each site$/;"	variable	line:156
+x	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^                x = newton_krylov(fns(u, n, Appn, T), [1., 1., 1., 1., 1.],$/;"	variable	line:161
+method	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^                                  method='cgs')$/;"	variable	line:162
+x	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^                x = newton_krylov(fns(u, n, Appn, T), x,$/;"	variable	line:164
+xfn	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^            xfn = x[0]*np.array([x[1], 1., x[2], x[3], x[4],$/;"	variable	line:173
+pfn	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^            pfn = xfn*a$/;"	variable	line:185
+M	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^            M = pfn\/np.sum(pfn) # fractions of different clusters$/;"	variable	line:186
+arr	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^            arr = np.array([1., Appn[0], Appn[1], Appn[2], Appn[3]])$/;"	variable	line:190
+p	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^            p = np.sum(arr*np.log(x))$/;"	variable	line:191
+p	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^            p=0$/;"	variable	line:193
+ps	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^        ps = np.array([Appn[0], 1.-Appn[0],$/;"	variable	line:199
+ideal	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^        ideal = np.sum(ps*np.log(ps)) # same as position in solution space when energies are equal to zero$/;"	variable	line:204
+pcl	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^        pcl = np.array([np.prod([p if E_mbr[i][j] > 1.e-10 else 1. for j, p in enumerate(cl)])$/;"	variable	line:205
+non_ideal	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^        non_ideal = np.sum(pcl*u)\/(R*T)$/;"	variable	line:207
+non_ideal_2	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^        non_ideal_2 = -np.einsum('i, ij, j ->', pcl, half_u_rxn_sqr\/((R*T)**2), pcl)$/;"	variable	line:208
+cluster_energies	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^        cluster_energies = ideal + non_ideal + non_ideal_2$/;"	variable	line:214
+end	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^    end = time.time()$/;"	variable	line:216
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^    numerical_solution = np.array(numerical_solution)$/;"	variable	line:219
+ideal_model	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^    ideal_model = np.array(ideal_model)$/;"	variable	line:220
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^    nonideal_1st_order = np.array(nonideal_1st_order)$/;"	variable	line:221
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980_opt.py	/^    nonideal_2nd_order = np.array(nonideal_2nd_order)$/;"	variable	line:222
+logish	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^def logish(x, eps=1.e-5):$/;"	function	line:10
+run_inversion	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^run_inversion=True$/;"	variable	line:21
+start	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^start = time.time()$/;"	variable	line:22
+R	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^R = 8.31446$/;"	variable	line:24
+fns	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^def fns(u, n, Appn, T):$/;"	function	line:30
+solfn	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^    def solfn(x):$/;"	function	line:32	function:fns
+T	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^T = 6000.\/R$/;"	variable	line:48
+u0	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^u0 = 0.$/;"	variable	line:49
+e1	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^e1 = 4000.*fac$/;"	variable	line:50
+e2	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^e2 = 8000.*fac$/;"	variable	line:51
+n	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^n = 1.$/;"	variable	line:52
+u	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^u = np.zeros((2, 2, 2, 2)) + u0$/;"	variable	line:55
+a	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^a = np.exp(-u\/(R*T))$/;"	variable	line:73
+calculate_squared_reaction_energies	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^def calculate_squared_reaction_energies(u):$/;"	function	line:75
+half_u_rxn_sqr	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^half_u_rxn_sqr = calculate_squared_reaction_energies(u)\/2.$/;"	variable	line:121
+energy_components	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^def energy_components(ps, T):$/;"	function	line:123
+chemical_potentials	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^def chemical_potentials(ps, T):$/;"	function	line:132
+fig	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^fig = plt.figure(figsize=(12,12))$/;"	variable	line:168
+ax	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^ax = [fig.add_subplot(2, 2, i) for i in range(1, 5)]$/;"	variable	line:169
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^    numerical_solution = []$/;"	variable	line:177
+ideal_model	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^    ideal_model = []$/;"	variable	line:178
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^    nonideal_1st_order = []$/;"	variable	line:179
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^    nonideal_2nd_order = []$/;"	variable	line:180
+bless	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^    bless = []$/;"	variable	line:181
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 1.-y]) # proportion of A on each site$/;"	variable	line:184
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 0.0001]) # proportion of A on each site$/;"	variable	line:186
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            Appn = np.array([y, y, 0.4001, 0.0001]) # proportion of A on each site$/;"	variable	line:188
+Appn	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            Appn = np.array([y, 1.-y, 0.2001, 0.2001]) # proportion of A on each site$/;"	variable	line:190
+ps	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^        ps = np.array([[Appn[0], 1.-Appn[0]],$/;"	variable	line:193
+cluster_energies	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^        cluster_energies = ideal + non_ideal + non_ideal_2$/;"	variable	line:199
+mu	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^        mu = chemical_potentials(ps, T)$/;"	variable	line:200
+logx_approx	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^        logx_approx = np.array([mu[1,1,1,1],$/;"	variable	line:202
+arr	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^        arr = np.array([1., Appn[0], Appn[1], Appn[2], Appn[3]])$/;"	variable	line:210
+x	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^        x = np.exp(logx_approx)$/;"	variable	line:211
+p	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^        p = np.sum(arr*logx_approx) # position in solution space, phi - psi, Equation 10.$/;"	variable	line:212
+xfn	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^        xfn = x[0]*np.einsum('i, j, k, l->ijkl',$/;"	variable	line:216
+pfn	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^        pfn = xfn*a$/;"	variable	line:220
+M2	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^        M2 = pfn\/np.sum(pfn) # fractions of different clusters$/;"	variable	line:221
+x	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^                x = newton_krylov(fns(u, n, Appn, T),$/;"	variable	line:243
+x	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^                x = np.exp(logx_approx)+np.random.rand(1)*1.e-5$/;"	variable	line:247
+p	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            p = np.sum(arr*np.log(x)) # position in solution space, phi - psi, Equation 10.$/;"	variable	line:251
+xfn	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            xfn = x[0]*np.einsum('i, j, k, l->ijkl',$/;"	variable	line:255
+pfn	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            pfn = xfn*a$/;"	variable	line:259
+M1	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            M1 = pfn\/np.sum(pfn) # fractions of different clusters$/;"	variable	line:260
+facs	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            facs = np.logspace(0., -0.5, 11)$/;"	variable	line:262
+x	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^                    x = newton_krylov(fns(u, n, Appn, T*fac),$/;"	variable	line:265
+p	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            p = np.sum(arr*np.log(x)) # position in solution space, phi - psi, Equation 10.$/;"	variable	line:275
+xfn	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            xfn = x[0]*np.einsum('i, j, k, l->ijkl',$/;"	variable	line:279
+pfn	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            pfn = xfn*a$/;"	variable	line:283
+M	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            M = pfn\/np.sum(pfn) # fractions of different clusters$/;"	variable	line:284
+p	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^            p=0$/;"	variable	line:291
+end	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^    end = time.time()$/;"	variable	line:300
+numerical_solution	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^    numerical_solution = np.array(numerical_solution)$/;"	variable	line:303
+ideal_model	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^    ideal_model = np.array(ideal_model)$/;"	variable	line:304
+nonideal_1st_order	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^    nonideal_1st_order = np.array(nonideal_1st_order)$/;"	variable	line:305
+nonideal_2nd_order	/home/bob/projects/csa/source/Senderov_1980_mu_anneal.py	/^    nonideal_2nd_order = np.array(nonideal_2nd_order)$/;"	variable	line:306
+logish	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^def logish(x, eps=1.e-5):$/;"	function	line:5
+run_inversion	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^run_inversion=True$/;"	variable	line:16
+start	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^start = time.time()$/;"	variable	line:17
+R	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^R = 8.31446$/;"	variable	line:19
+T	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^T = 6000.\/R$/;"	variable	line:24
+u0	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^u0 = 0.$/;"	variable	line:25
+e1	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^e1 = 4000.*fac$/;"	variable	line:26
+e2	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^e2 = 8000.*fac$/;"	variable	line:27
+n	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^n = 1.$/;"	variable	line:28
+u	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^u = np.zeros((2, 2, 2, 2)) + u0$/;"	variable	line:31
+a	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^a = np.exp(-u\/(R*T))$/;"	variable	line:49
+calculate_squared_reaction_energies	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^def calculate_squared_reaction_energies(u):$/;"	function	line:51
+half_u_rxn_sqr	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^half_u_rxn_sqr = calculate_squared_reaction_energies(u)\/2.$/;"	variable	line:97
+energy_phi	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^def energy_phi(ps, T):$/;"	function	line:99
+chemical_potential	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^def chemical_potential(ps, T):$/;"	function	line:108
+fig	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^fig = plt.figure(figsize=(12,12))$/;"	variable	line:145
+ax	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^ax = [fig.add_subplot(2, 2, i) for i in range(1, 4)]$/;"	variable	line:146
+energies	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^    energies = []$/;"	variable	line:153
+entropies	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^    entropies = []$/;"	variable	line:154
+gibbs_energies	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^    gibbs_energies = []$/;"	variable	line:155
+Appn	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 1.-y]) # proportion of A on each site$/;"	variable	line:158
+Appn	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^            Appn = np.array([1.-y, 1.-y, 1.-y, 0.2001]) # proportion of A on each site$/;"	variable	line:160
+Appn	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^            Appn = np.array([y, y, 0.4001, 0.0001]) # proportion of A on each site$/;"	variable	line:162
+Appn	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^            Appn = np.array([y, 1.-y, 0.2001, 0.2001]) # proportion of A on each site$/;"	variable	line:164
+ps	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        ps = np.array([[Appn[0], 1.-Appn[0]],$/;"	variable	line:167
+cluster_energies	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        cluster_energies = energy_phi(ps, T)$/;"	variable	line:173
+mu	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        mu = chemical_potential(ps, T)$/;"	variable	line:174
+logx_approx	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        logx_approx = np.array([mu[1,1,1,1],$/;"	variable	line:176
+arr	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        arr = np.array([1., Appn[0], Appn[1], Appn[2], Appn[3]])$/;"	variable	line:183
+x	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        x = np.exp(logx_approx)$/;"	variable	line:184
+p	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        p = np.sum(arr*logx_approx) # position in solution space, phi - psi, Equation 10.$/;"	variable	line:185
+xfn	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        xfn = x[0]*np.einsum('i, j, k, l->ijkl',$/;"	variable	line:189
+pfn	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        pfn = xfn*a$/;"	variable	line:193
+M2	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        M2 = pfn\/np.sum(pfn) # fractions of different clusters$/;"	variable	line:194
+energy	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        energy = np.sum(M2*u)$/;"	variable	line:196
+S_n	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        S_n = -np.sum(M2*logish(M2))$/;"	variable	line:197
+S_1	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        S_1 = -np.sum(ps*logish(ps))$/;"	variable	line:198
+zeta	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        zeta = 1.42 # Cao et al., 2007; number of non-interfering clusters per site in the original CSA model$/;"	variable	line:200
+entropy	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        entropy = R*(zeta*S_n + (1.\/4. - zeta)*S_1)$/;"	variable	line:201
+gibbs_energy	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^        gibbs_energy = energy - T*entropy$/;"	variable	line:203
+end	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^    end = time.time()$/;"	variable	line:208
+energies	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^    energies = np.array(energies)$/;"	variable	line:211
+entropies	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^    entropies = np.array(entropies)$/;"	variable	line:212
+gibbs_energies	/home/bob/projects/csa/source/Senderov_1980_energy_calc.py	/^    gibbs_energies = np.array(gibbs_energies)$/;"	variable	line:213
+site_species	/home/bob/projects/csa/source/blockmeanfield_model.py	/^site_species = [['A', 'B'], ['A', 'B'], ['A', 'B'], ['A', 'B']]$/;"	variable	line:10
+site_species_energies	/home/bob/projects/csa/source/blockmeanfield_model.py	/^site_species_energies = np.array([-1.,  1., -1.,  1., 1., -1., 1., -1.])*R$/;"	variable	line:11
+site_species_energies	/home/bob/projects/csa/source/blockmeanfield_model.py	/^site_species_energies = np.array([0., 0., 0., 0., 0., 0., 0., 0.])*R$/;"	variable	line:12
+bond_energies	/home/bob/projects/csa/source/blockmeanfield_model.py	/^bond_energies = np.array([[-0.,  0.,  0., -1.,  0., -1.,  0., -1.],$/;"	variable	line:14
+cluster_bonds_per_cluster	/home/bob/projects/csa/source/blockmeanfield_model.py	/^cluster_bonds_per_cluster = np.array([[0., 0., 4., 4., 4., 4., 4., 4.],$/;"	variable	line:23
+bridging_bonds_per_cluster	/home/bob/projects/csa/source/blockmeanfield_model.py	/^bridging_bonds_per_cluster = np.copy(cluster_bonds_per_cluster)$/;"	variable	line:32
+ss	/home/bob/projects/csa/source/blockmeanfield_model.py	/^ss = BlockMeanFieldModel(site_species=site_species,$/;"	variable	line:35
+site_species_energies	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                         site_species_energies=site_species_energies,$/;"	variable	line:36
+bond_energies	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                         bond_energies=bond_energies,$/;"	variable	line:37
+cluster_bonds_per_cluster	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                         cluster_bonds_per_cluster=cluster_bonds_per_cluster,$/;"	variable	line:38
+bridging_bonds_per_cluster	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                         bridging_bonds_per_cluster=bridging_bonds_per_cluster,$/;"	variable	line:39
+fraction_bridging_bonds_in_basic_cluster	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                         fraction_bridging_bonds_in_basic_cluster=0.75)$/;"	variable	line:40
+ps	/home/bob/projects/csa/source/blockmeanfield_model.py	/^ps = np.array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5])$/;"	variable	line:42
+temperatures	/home/bob/projects/csa/source/blockmeanfield_model.py	/^temperatures = np.linspace(0.1, 8., 101)$/;"	variable	line:43
+Ss	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss = np.empty_like(temperatures)$/;"	variable	line:44
+Es	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es = np.empty_like(temperatures)$/;"	variable	line:45
+Fs	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Fs = np.empty_like(temperatures)$/;"	variable	line:46
+fig	/home/bob/projects/csa/source/blockmeanfield_model.py	/^fig = plt.figure(figsize=(20,5))$/;"	variable	line:48
+ax	/home/bob/projects/csa/source/blockmeanfield_model.py	/^ax = [fig.add_subplot(1, 3, i) for i in range(1, 4)]$/;"	variable	line:49
+temperatures	/home/bob/projects/csa/source/blockmeanfield_model.py	/^temperatures = np.linspace(0.1, 4., 51)$/;"	variable	line:77
+Ss	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss = np.empty_like(temperatures)$/;"	variable	line:78
+Es	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es = np.empty_like(temperatures)$/;"	variable	line:79
+Fs	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Fs = np.empty_like(temperatures)$/;"	variable	line:80
+Ss2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss2 = np.empty_like(temperatures)$/;"	variable	line:81
+Es2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es2 = np.empty_like(temperatures)$/;"	variable	line:82
+Fs2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Fs2 = np.empty_like(temperatures)$/;"	variable	line:83
+label	/home/bob/projects/csa/source/blockmeanfield_model.py	/^               label='A{0}B{1}'.format(f, 4 - f), linestyle=':')$/;"	variable	line:111
+label	/home/bob/projects/csa/source/blockmeanfield_model.py	/^               label='A{0}B{1}'.format(f, 4 - f), linestyle=':')$/;"	variable	line:113
+label	/home/bob/projects/csa/source/blockmeanfield_model.py	/^               label='A{0}B{1}'.format(f, 4 - f), linestyle=':')$/;"	variable	line:115
+label	/home/bob/projects/csa/source/blockmeanfield_model.py	/^               label='A{0}B{1}'.format(f, 4 - f), linestyle=':')$/;"	variable	line:117
+temperatures	/home/bob/projects/csa/source/blockmeanfield_model.py	/^temperatures = np.linspace(0.1, 5., 101)$/;"	variable	line:125
+Ss	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss = np.empty_like(temperatures)$/;"	variable	line:126
+Ss2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss2 = np.empty_like(temperatures)$/;"	variable	line:127
+Ss3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss3 = np.empty_like(temperatures)$/;"	variable	line:128
+Es	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es = np.empty_like(temperatures)$/;"	variable	line:129
+Es2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es2 = np.empty_like(temperatures)$/;"	variable	line:130
+Es3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es3 = np.empty_like(temperatures)$/;"	variable	line:131
+Gs	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs = np.empty_like(temperatures)$/;"	variable	line:132
+Gs2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs2 = np.empty_like(temperatures)$/;"	variable	line:133
+Gs3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs3 = np.empty_like(temperatures)$/;"	variable	line:134
+fig	/home/bob/projects/csa/source/blockmeanfield_model.py	/^fig = plt.figure()$/;"	variable	line:136
+ax	/home/bob/projects/csa/source/blockmeanfield_model.py	/^ax = [fig.add_subplot(1, 3, i) for i in range(1, 4)]$/;"	variable	line:137
+ps	/home/bob/projects/csa/source/blockmeanfield_model.py	/^    ps = np.array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5])$/;"	variable	line:140
+S_IUCA	/home/bob/projects/csa/source/blockmeanfield_model.py	/^S_IUCA = cumtrapz(np.gradient(Es, temperatures)\/temperatures, temperatures,$/;"	variable	line:162
+initial	/home/bob/projects/csa/source/blockmeanfield_model.py	/^                  initial=0.)$/;"	variable	line:163
+label	/home/bob/projects/csa/source/blockmeanfield_model.py	/^           label='IUCA')$/;"	variable	line:165
+fig	/home/bob/projects/csa/source/blockmeanfield_model.py	/^fig = plt.figure()$/;"	variable	line:176
+ax	/home/bob/projects/csa/source/blockmeanfield_model.py	/^ax = [fig.add_subplot(2, 3, i) for i in range(1, 7)]$/;"	variable	line:177
+temperatures	/home/bob/projects/csa/source/blockmeanfield_model.py	/^temperatures = np.linspace(0.05, 2., 101)$/;"	variable	line:179
+fs	/home/bob/projects/csa/source/blockmeanfield_model.py	/^fs = np.linspace(0.01, 0.5, 51)$/;"	variable	line:180
+Ss	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss = np.empty_like(fs)$/;"	variable	line:181
+Ss2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss2 = np.empty_like(fs)$/;"	variable	line:182
+Ss3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Ss3 = np.empty_like(fs)$/;"	variable	line:183
+Es	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es = np.empty_like(fs)$/;"	variable	line:184
+Es2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es2 = np.empty_like(fs)$/;"	variable	line:185
+Es3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Es3 = np.empty_like(fs)$/;"	variable	line:186
+Gs	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs = np.empty_like(fs)$/;"	variable	line:187
+Gs2	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs2 = np.empty_like(fs)$/;"	variable	line:188
+Gs3	/home/bob/projects/csa/source/blockmeanfield_model.py	/^Gs3 = np.empty_like(fs)$/;"	variable	line:189
+ps	/home/bob/projects/csa/source/blockmeanfield_model.py	/^        ps = np.array([f, 1.-f, f, 1.-f, 1.-f, f, 1.-f, f])$/;"	variable	line:194

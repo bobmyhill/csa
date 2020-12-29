@@ -1,5 +1,5 @@
 import numpy as np
-from models.csasolutionmodel import CSAModel, R
+from models.iucasolutionmodel import IUCAModel, R
 
 
 def binary_cluster_energies(wAB, alpha=0., beta=0.):
@@ -41,23 +41,25 @@ def binary_cluster_energies(wAB, alpha=0., beta=0.):
     return u
 
 
-gamma = 1.22
-wAB = -1.*R/gamma
-ss = CSAModel(cluster_energies=binary_cluster_energies(wAB), gamma=gamma,
-              site_species=[['A', 'B'], ['A', 'B'],
-                            ['A', 'B'], ['A', 'B']])
+gamma = 1.22*4.
+wAB = -1.*R*4.
+ss = IUCAModel(cluster_energies=binary_cluster_energies(wAB), alpha=3./4.,
+               site_species=[['A', 'B'], ['A', 'B'],
+                             ['A', 'B'], ['A', 'B']])
 
 T = 0.8
 ss.set_state(T)
 ss.set_composition_from_p_ind(np.array([-0.6,  0.3,  0.15,  0.5,  0.65]))
 ss.equilibrate_clusters()
+p0 = ss.p_ind
+
 
 G0 = ss.molar_gibbs
 S0 = ss.molar_entropy
 JG = ss.molar_chemical_potentials
 JS = ss.partial_molar_entropies
-HG = ss.hessian_gibbs
-HS = ss.hessian_entropy
+#HG = ss.hessian_gibbs
+#HS = ss.hessian_entropy
 
 c0 = ss.c
 
@@ -95,6 +97,7 @@ print('\nChemical potentials, partial entropy (numerical)')
 print(mu)
 print(partial_S)
 
+"""
 print('\n Hessians (analytical)')
 print(HG)
 print(HS)
@@ -102,3 +105,4 @@ print(HS)
 print('\n Hessians (numerical)')
 print(hess_G)
 print(hess_S)
+"""

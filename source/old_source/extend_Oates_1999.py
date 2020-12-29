@@ -66,10 +66,26 @@ ax1[4].imshow(pfig4, extent=[0.0, 1.0, 1.08*3./7., 1.08], aspect='auto')
 ax1[5].imshow(pfig5, extent=[0.0, 1.0, 1.08*3./7., 1.08], aspect='auto')
 
 
-reduced_temperatures = np.linspace(0.6, 1.2, 61)
+reduced_temperatures = np.linspace(0.2, 1.2, 61)
 Ss_disordered = np.empty_like(reduced_temperatures)
 Ss_equilibrium = np.empty_like(reduced_temperatures)
 
+gamma = 1.42
+ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R),
+              gamma=gamma,
+              site_species=[['A', 'B'], ['A', 'B'],
+                            ['A', 'D'], ['A', 'D']])
+T = 5.2
+ss.equilibrate(composition={'A': 1.7, 'B': 1.1, 'D': 1.2},
+               temperature=T)
+S_c = -R*np.sum(ss.cluster_proportions*np.log(ss.cluster_proportions))
+S_s = -R*np.sum(ss.p_s*np.log(ss.p_s))
+print(ss.cluster_proportions)
+print(ss.p_s)
+
+print(S_c, S_s)
+print(ss.molar_entropy)
+print(gamma*S_c + (1./4. - gamma) * S_s)
 
 for gamma in [1., 1.22]:
     ss = CSAModel(cluster_energies=binary_cluster_energies(wAB=-R),
@@ -81,7 +97,7 @@ for gamma in [1., 1.22]:
         ss.equilibrate(composition={'A': 2., 'B': 2.}, temperature=T)
         Ss_equilibrium[i] = ss.molar_entropy
 
-    ax1[1].plot(reduced_temperatures, Ss_equilibrium/R, label='equilibrium')
+    ax1[1].plot(reduced_temperatures, Ss_equilibrium/R, label='0.5:0.5 equilibrium')
 
 
 xs = np.linspace(0.01, 0.99, 201)

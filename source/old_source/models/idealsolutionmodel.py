@@ -31,9 +31,9 @@ def inverseish(x, eps=1.e-5):
     return oneoverx
 
 
-class CSAModel(object):
+class CEFModel(object):
     """
-    This is the base class for all Cluster/Site Approximation models
+    This is the base class for all CEF models
     """
 
     def __init__(self, cluster_energies, gamma, site_species,
@@ -229,7 +229,7 @@ class CSAModel(object):
             self.set_composition_from_p_ind(p_ind)
             self.equilibrate_clusters()
             grad = rxn_matrix.dot(self.molar_chemical_potentials)
-            return self.molar_gibbs, grad
+            return self.molar_helmholtz, grad
 
         self.set_state(temperature)
 
@@ -256,8 +256,7 @@ class CSAModel(object):
                        args=(p_ind0, self.isochemical_reactions),
                        jac=True)
 
-        # store c and E
-        c = self.c
+        # store pind and E
         p_ind = self.p_ind
         E = res.fun
 
@@ -280,7 +279,6 @@ class CSAModel(object):
 
         if res.fun > E:
             self.set_composition_from_p_ind(p_ind)
-            self.c = c
             self.equilibrated_clusters = True
             self.set_cluster_proportions()
 
@@ -337,7 +335,11 @@ class CSAModel(object):
         return np.exp(np.where(lnval > 100, 100., lnval))
 
     def set_cluster_proportions(self):
-        cf = self._cluster_proportions(self.c, self.temperature)
+        """
+        NOTE THAT WE ALWAYS USE THE IDEAL CLUSTER PROPORTIONS HERE
+        THIS REQUIRES THAT self.p_s IS SET CORRECTLY
+        """
+        cf = self._ideal_cluster_proportions(self.p_s)
         self.cluster_proportions_flat = cf
         self.ln_cluster_proportions_flat = logish(cf)
 
@@ -351,67 +353,6 @@ class CSAModel(object):
         return deltas, jac
 
     def equilibrate_clusters(self):
-        if np.max(self._ideal_c) > -1.e-10:  # pure endmember
-            self.c = self._ideal_c
-        else:  # Try the ideal cluster proportions
-            sol = root(self.delta_proportions, self._ideal_c, jac=True,
-                       args=(self.temperature),
-                       method='lm', options={'ftol': 1.e-16})
-
-            # print('ideal', self._ideal_c)
-            if np.max(np.abs(sol.fun)) < 1.e-8:
-                self.c = sol.x
-            else:  # Try near-fully ordered cluster proportions
-
-                p_cl_ord = self.ground_state_cluster_proportions
-                p_cl_disord = self.ideal_cluster_proportions
-                p_cl_near_ord = 0.05 * p_cl_disord + 0.95 * p_cl_ord
-                near_ord_c = (logish(p_cl_near_ord[self.pivots])
-                              + (self.cluster_energies_flat[self.pivots]
-                                 / (self.temperature * R)))
-
-                sol = root(self.delta_proportions, near_ord_c, jac=True,
-                           args=(self.temperature),
-                           method='lm', options={'ftol': 1.e-16})
-
-                if np.max(np.abs(sol.fun)) < 1.e-8:
-                    self.c = sol.x
-                else:
-                    # try to anneal
-                    T = 10000.
-                    n_steps = 4
-                    good = True
-                    while T > self.temperature + 0.1 or not good:
-                        T_steps = np.logspace(np.log10(T),
-                                              np.log10(self.temperature),
-                                              n_steps)
-
-                        guess_c = self._ideal_c
-                        for i, T in enumerate(T_steps):
-                            sol = root(self.delta_proportions, guess_c,
-                                       args=(T), jac=True,
-                                       method='lm', tol=1.e-10,
-                                       options={'ftol': 1.e-16})
-
-                            if np.max(np.abs(sol.fun)) < 1.e-10:
-                                guess_c = sol.x
-                                good = True
-
-                            else:
-                                n_steps *= 2
-
-                                if n_steps > 100:
-                                    print(sol)
-                                    print(self._cluster_proportions(sol.x, T_steps[-1]))
-                                    raise Exception('Clusters could not be '
-                                                    'equilibrated, '
-                                                    'even with annealing')
-                                T = T_steps[i-1]
-                                good = False
-                                break
-
-                    self.c = sol.x
-
         self.equilibrated_clusters = True
         self.set_cluster_proportions()
 
@@ -467,7 +408,8 @@ class CSAModel(object):
         return Wint
 
     def non_ideal_energy(self):
-        return np.einsum('i, j, ij', self.p_ind, self.p_ind, self.independent_interactions)
+        return np.einsum('i, j, ij',
+                         self.p_ind, self.p_ind, self.independent_interactions)
 
     def check_equilibrium(self):
         if self.equilibrated_clusters:
@@ -478,38 +420,25 @@ class CSAModel(object):
 
     @property
     def hessian_entropy(self):
-        D = self._dpcl_dp_ind()
-        F = self._d2pcl_dp_ind_dp_ind()
 
         total_site_atoms = np.sum(self.p_s)
-        # total_clusters = np.sum(self.cluster_proportions_flat)
-
-        d2S_dpcl2 = np.diag(inverseish(self.cluster_proportions_flat)) - 1.
-        hess_S_n = -R*(np.einsum('im, ij, mk-> jk', d2S_dpcl2, D, D)
-                       + np.einsum('i, ijk->jk',
-                                   self.ln_cluster_proportions_flat, F))
 
         hess_S_i = -R*(np.einsum('ki, ji, i->jk',
                                  self.independent_cluster_occupancies,
                                  self.independent_cluster_occupancies,
                                  inverseish(self.p_s)) - total_site_atoms)
 
-        hess_S_t = (self.gamma * hess_S_n
-                    + (1./self.n_sites - self.gamma) * hess_S_i)
-
-        return hess_S_t
+        return hess_S_i/self.n_sites
 
     @property
     def partial_molar_entropies(self):
         self.check_equilibrium()
-        D = self._dpcl_dp_ind()
 
-        g_S_n = -R*(np.einsum('lk, l', D, self.ln_cluster_proportions_flat))
         g_S_i = -R*(np.einsum('ki, i',
                               self.independent_cluster_occupancies,
                               self.ln_p_s))
-        g_S_t = self.gamma * g_S_n + (1./self.n_sites - self.gamma) * g_S_i
-        return g_S_t
+
+        return g_S_i/self.n_sites
 
     @property
     def molar_entropy(self):
@@ -519,16 +448,12 @@ class CSAModel(object):
         self.check_equilibrium()
 
         # Cluster and site entropy contributions per cluster
-        S_n = -R*np.sum(self.cluster_proportions * self.ln_cluster_proportions)
         S_i = -R*np.sum(self.p_s * self.ln_p_s)
 
-        # remember gamma is the number of noninterfering clusters PER SITE
-        S_t = self.gamma * S_n + (1./self.n_sites - self.gamma) * S_i
-
-        return S_t
+        return S_i/self.n_sites
 
     @property
-    def hessian_gibbs(self):
+    def hessian_helmholtz(self):
         F = self._d2pcl_dp_ind_dp_ind()
 
         hess_G = np.einsum('ijk, i -> jk', F, self.cluster_energies_flat)
@@ -550,12 +475,21 @@ class CSAModel(object):
         return chemical_potentials + self.non_ideal_potentials()
 
     @property
-    def molar_gibbs(self):
+    def molar_internal_energy(self):
         """
-        The gibbs free energy per mole of sites
+        The helmholtz free energy per mole of sites
+        """
+        E_t = np.sum(self.cluster_proportions * self.cluster_energies)
+
+        return E_t + self.non_ideal_energy()
+
+    @property
+    def molar_helmholtz(self):
+        """
+        The helmholtz free energy per mole of sites
         """
         S_t = self.molar_entropy
-        E_t = np.sum(self.cluster_proportions * self.cluster_energies)
+        E_t = self.molar_internal_energy
         G_t = E_t - self.temperature * S_t
 
-        return G_t + self.non_ideal_energy()
+        return G_t
