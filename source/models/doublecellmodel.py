@@ -486,7 +486,7 @@ class DoubleCellModel(object):
             raise Exception('This property of the solution requires '
                             'you to first call equilibrate_clusters()')
 
-    def _dpcl_dp_ind(self, cluster_proportions_flat):
+    def _dpcl_dp_ind(self):
         dp_ind_dc = np.einsum('ijk, i -> kj', self._AA,
                               self.cluster_proportions)
         dpcl_dc = np.einsum('ij, i -> ij', self.A_ind,
@@ -498,6 +498,30 @@ class DoubleCellModel(object):
             return solve(dp_ind_dc.T, dpcl_dc.T).T
         except np.linalg.LinAlgError:  # singular matrix
             return np.einsum('lj, jk -> lk', dpcl_dc, pinv(dp_ind_dc))
+
+    def _d2pcl_dp_ind_dp_ind(self):
+
+        pc = self.cluster_proportions
+        dpcl_dc = np.einsum('ij, i -> ij', self.A_ind, pc)
+        dp_ind_dc = np.einsum('ijk, i -> jk', self._AA, pc)
+        dpcl_dcdc = np.einsum('ijn, i -> ijn', self._AA, pc)
+        dMdc = np.einsum('il, ij, ik, i -> jkl',
+                         self.A_ind, self.A_ind, self.A_ind, pc)
+
+        Minv = pinv(dp_ind_dc)
+
+        D = np.einsum('lj, jk -> lk', dpcl_dc, Minv)
+        E = dpcl_dcdc - np.einsum('il, mln-> imn', D, dMdc)
+        F = np.einsum('imn, mk, np -> ikp', E, Minv, Minv)
+
+        return F
+
+    def non_ideal_hessian(self):
+        q = np.eye(self.n_ind) - np.einsum('i, j->ij', np.ones(self.n_ind),
+                                           self.p_ind)
+        hess = np.einsum('ij, jk, mk->im', q, self.independent_interactions, q)
+        hess += hess.T
+        return hess
 
     def non_ideal_potentials(self):
         # -sum(sum(qi.qj.Wij*)
@@ -514,35 +538,109 @@ class DoubleCellModel(object):
                          self.independent_interactions)
 
     @property
+    def hessian_entropy(self):
+        D = self._dpcl_dp_ind()
+        F = self._d2pcl_dp_ind_dp_ind()
+
+        # total_site_atoms = np.sum(self.p_s)
+        # total_clusters = np.sum(self.cluster_proportions_flat)
+
+        d2S_dpcl2 = np.diag(inverseish(self.cluster_proportions)) - 1.
+        hess_S_n = -R*(np.einsum('im, ij, mk-> jk', d2S_dpcl2, D, D)
+                       + np.einsum('i, ijk->jk',
+                                   self.ln_cluster_proportions, F))
+
+        return hess_S_n*2.
+
+    @property
+    def hessian_energy(self):
+
+        D = self._dpcl_dp_ind()
+        F = self._d2pcl_dp_ind_dp_ind()
+
+        dps = [np.eye(e-s) - np.einsum('i, j->ij', self.p_s[s:e], np.ones(e-s))
+               for (s, e) in self.site_bounds]
+        dps = block_diag(*dps)
+
+        dij = [np.eye(e-s) for (s, e) in self.site_bounds]
+        x = [np.einsum('i, j, k->ijk',
+                       self.p_s[s:e],
+                       np.ones(e-s),
+                       np.ones(e-s)) for (s, e) in self.site_bounds]
+
+        blocks = [2.*x[i]
+                  - np.einsum('ij, k->ijk', dij[i], np.ones(len(dij[i])))
+                  - np.einsum('ik, j->ijk', dij[i], np.ones(len(dij[i])))
+                  for i in range(len(x))]
+
+        d2ps_dps_dps = np.zeros((self.n_site_species,
+                                 self.n_site_species,
+                                 self.n_site_species))
+        for i, (s, e) in enumerate(self.site_bounds):
+            d2ps_dps_dps[s:e, s:e, s:e] = blocks[i]
+
+        term_2 = (np.einsum('lj, li, im, km->kj',
+                            D,
+                            self.E_mfd,
+                            dps,
+                            self.independent_cluster_occupancies)
+                  + np.einsum('i, ik, kom, no, lm->nl',
+                              self.cluster_proportions,
+                              self.E_mfd,
+                              d2ps_dps_dps,
+                              self.independent_cluster_occupancies,
+                              self.independent_cluster_occupancies)/2.)
+
+        hess_E = (np.einsum('ijk, i -> jk', F, self.cluster_energies)*2.
+                  + np.einsum('lj, li, im, km->jk',
+                              D,
+                              self.E_mfd,
+                              dps,
+                              self.independent_cluster_occupancies)
+                  + term_2)
+        return hess_E
+
+    @property
+    def hessian_helmholtz(self):
+
+        hess_E = self.hessian_energy
+        hess_S = self.hessian_entropy
+
+        return hess_E - self.temperature * hess_S + self.non_ideal_hessian()
+
+    @property
     def partial_molar_entropies(self):
         self.check_equilibrium()
 
-        D = self._dpcl_dp_ind(self.cluster_proportions)
+        D = self._dpcl_dp_ind()
         g_S_n = -R*(np.einsum('lk, l', D, self.ln_cluster_proportions))
 
         return g_S_n
+
+    @property
+    def partial_molar_energies(self):
+        dps = [np.eye(e-s) - np.einsum('i, j->ij', self.p_s[s:e], np.ones(e-s))
+               for (s, e) in self.site_bounds]
+        dps = block_diag(*dps)
+        D = self._dpcl_dp_ind()
+        g_E = (np.einsum('lk, l', D, self.cluster_energies)
+               + np.einsum('i, ik, km, lm->l',
+                           self.cluster_proportions,
+                           self.E_mfd,
+                           dps,
+                           self.independent_cluster_occupancies)/2.)
+
+        return g_E
 
     @property
     def molar_chemical_potentials(self):
         """
         The chemical potentials per mole of sites
         """
-        g_S_t = self.partial_molar_entropies
+        g_S = self.partial_molar_entropies
+        g_E = self.partial_molar_energies
 
-        D = self._dpcl_dp_ind(self.cluster_proportions)
-
-        dps = [np.eye(e-s) - np.einsum('i, j->ij', self.p_s[s:e], np.ones(e-s))
-               for (s, e) in self.site_bounds]
-        dps = block_diag(*dps)
-
-        g_E = (np.einsum('lk, l->k', D, self.cluster_energies))
-        #       + np.einsum('i, ik, km, lm->l',
-        #                   self.cluster_proportions,
-        #                   self.cluster_interactions,
-        #                   dps,
-        #                   self.independent_cluster_occupancies))
-
-        chemical_potentials = g_E - self.temperature * g_S_t
+        chemical_potentials = g_E - self.temperature * g_S
 
         return chemical_potentials + self.non_ideal_potentials()
 
@@ -555,14 +653,14 @@ class DoubleCellModel(object):
 
         # Cluster and site entropy contributions per cluster
         S_n = -R*np.sum(self.cluster_proportions
-                        * self.ln_cluster_proportions)
+                        * self.ln_cluster_proportions)/2.
 
         return S_n
 
     @property
     def molar_internal_energy(self):
         E = np.sum(self.cluster_proportions
-                   * self.cluster_energies)
+                   * self.cluster_energies)/2.
         return E + self.non_ideal_energy()
 
     @property
