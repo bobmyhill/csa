@@ -511,8 +511,8 @@ class DoubleCellModel(object):
         Minv = pinv(dp_ind_dc)
 
         D = np.einsum('lj, jk -> lk', dpcl_dc, Minv)
-        E = dpcl_dcdc - np.einsum('il, mln-> imn', D, dMdc)
-        F = np.einsum('imn, mk, np -> ikp', E, Minv, Minv)
+        E = dpcl_dcdc - np.einsum('lk, mkn-> lmn', D, dMdc)
+        F = np.einsum('lmn, mk, np -> lkp', E, Minv, Minv)
 
         return F
 
